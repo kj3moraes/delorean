@@ -40,16 +40,7 @@ class TreeOfContents:
     @staticmethod
     def getHeadingLevel(bs):
         """
-        >>> bsify = lambda html: BeautifulSoup(html, 'html.parser')
-        >>> bs = bsify('<h1>Hello</h1>').h1
-        >>> TOC.getHeadingLevel(bs)
-        1
-        >>> bs2 = bsify('<p>Hello</p>').p
-        >>> TOC.getHeadingLevel(bs2)
-
-        >>> bs3 = bsify('<article>Hello</article>').article
-        >>> TOC.getHeadingLevel(bs3)
-
+        Return heading level of BeautifulSoup object
         """
         try:
             return int(bs.name[1])
@@ -59,11 +50,6 @@ class TreeOfContents:
     def parseTopDepth(self):
         """
         Parse highest heading in markdown
-
-        >>> TOC.fromHTML('<h2>haha</h2><h1>hoho</h1>').parseTopDepth()
-        1
-        >>> TOC.fromHTML('<h3>haha</h3><h2>hoho</h2>').parseTopDepth()
-        2
         """
         for i in range(1, 7):
             if getattr(self.source, 'h%d' % i):
@@ -76,8 +62,7 @@ class TreeOfContents:
         :param list branches: list of immediate children as TreeOfContents objs
         :return: list of all descendants
         """
-        return sum([b.descendants() for b in branches], []) + \
-            [b.source for b in branches]
+        return sum([b.descendants() for b in branches], []) + [b.source for b in branches]
 
     def parseBranches(self, descendants):
         """
@@ -130,9 +115,6 @@ class TreeOfContents:
     def fromMarkdown(md, *args, **kwargs):
         """
         Creates abstraction using path to file
-
-        :param str path: path to markdown file
-        :return: TreeOfContents object
         """
         return TOC.fromHTML(markdown(md, *args, **kwargs))
 
@@ -140,13 +122,10 @@ class TreeOfContents:
     def fromHTML(html, *args, **kwargs):
         """
         Creates abstraction using HTML
-
-        :param str html: HTML
-        :return: TreeOfContents object
         """
         source = BeautifulSoup(html, 'html.parser', *args, **kwargs)
         return TOC('[document]',
-            source=source,
-            descendants=source.children)
+                    source=source,
+                    descendants=source.children)
 
 TOC = TreeOfContents

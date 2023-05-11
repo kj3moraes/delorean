@@ -1,11 +1,11 @@
-from .md2py import TreeOfContents
+from treebuild import TreeOfContents
+from tree.types import MarkdownTree
 
-
-def markdown_tree(md, *args, **kwargs):
+def treeify(md:str, *args, **kwargs):
     """
-    Converts markdown file Python object
-
-    :param str md: markdown string
-    :return: object
+    Converts markdown file to a Python object
     """
     return TreeOfContents.fromMarkdown(md, *args, **kwargs)
+
+def mardownify(tree:MarkdownTree):
+    pass
