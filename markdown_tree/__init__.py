@@ -1,7 +1,7 @@
 from .md2py import TreeOfContents
 
 
-def md2py(md, *args, **kwargs):
+def markdown_tree(md, *args, **kwargs):
     """
     Converts markdown file Python object
 

@@ -19,21 +19,22 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-VERSION = '0.0.1'
+VERSION = '0.1.0'
+DESCRIPTION = 'A package to convert markdown into extensible Python data structure'
 
 setup(
-    name = "md2py",
+    name = "markdown-tree",
     version = VERSION,
-    author = "Alvin Wan",
-    author_email = 'hi@alvinwan.com',
-    description = ("utility converting markdown into Python abstraction"),
-    license = "Apache",
-    url = "http://github.com/alvinwan/md2py",
-    packages = ['md2py'],
+    author = "Keane Moraes",
+    author_email = 'lordvader3002@gmail.com',
+    description = DESCRIPTION,
+    license = "Apache 2.0",
+    url = "http://github.com/kj3moraes/markdown-tree",
+    packages = ['markdown_tree'],
     cmdclass = {'test': PyTest},
     tests_require = ['pytest'],
     install_requires = ['markdown', 'beautifulsoup4'],
-    download_url = 'https://github.com/alvinwan/md2py/archive/%s.zip' % VERSION,
+    download_url = 'https://github.com/kj3moraes/markdown-tree/archive/%s.zip' % VERSION,
     classifiers = [
         "Topic :: Utilities",
     ],
