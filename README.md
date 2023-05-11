@@ -1,11 +1,17 @@
-# Markdown2Python (md2py)
+# Markdown Tree
 
-md2py converts markdown into a Python parse tree. This allows you to 
-navigate a markdown file as a document structure.
+markdown-tree is a fork of [md2py](https://github.com/alvinwan/md2py) which is no longer maintained. This library adds far more functionality and broadens the scope of the older libary. The full list of features can be found under [Features](## Features)
 
-See [tex2py](https://github.com/alvinwan/tex2py) for a LaTeX parse tree.
+## Install 
 
-## Usage
+Install via pip
+```bash
+pip install markdown-tree
+```
+
+You can find the library [here](nil)
+
+## Quick Usage Guide 
 
 Markdown2Python offers only one function `md2py`, which generates a Python
 object from markdown text. This object is a navigable, "Tree of Contents"
@@ -52,68 +58,14 @@ will generate a tree, abstracting the below structure.
   Waddling      Plopping    I Scream
 ```
 
-At the global level, we can access the title.
+For the full usage guide, access the SAMPLES.md file.
 
-```
->>> toc = md2py(markdown)
->>> toc.h1
-Chikin Tales
->>> str(toc.h1)
-'Chikin Tales'
-```
+## Features 
 
-Notice that at this level, there are no `h2`s.
+Some of the features of this library are:
+1. Converts a markdown file to a manipulatable, light Python data structure 
+2. Converts the Python data structure back into a Markdown file.
+3. Traverse and edit the Python data structure. 
 
-```
->>> list(toc.h2s)
-[]
-```
-
-The main `h1` has two `h2`s beneath it. We can access both.
-
-```
->>> list(toc.h1.h2s)
-[Chapter 1 : Chikin Fly, Chapter 2 : Chikin Scream]
->>> toc.h1.h2
-Chapter 1 : Chikin Fly
-```
-
-In total, there are 3 `h3`s in this document. However, only 1 `h3` is
-actually nested within 'Chapter 1 : Chikin Fly' (accessible via `toc.h1.h2`).
-As a result, `toc.h1.h2.h3s` will only show one `h3`s.
-
-```
->>> list(toc.h1.h2.h3s)
-['Waddling']
-```
-
-The `TreeOfContents` class also has a few more conveniences defined. Among them
-is support for indexing. To access the `i`th child of an `<element>` - instead of `<element>.branches[i]` - use `<element>[i]`.
-
-See below for example usage.
-
-```
->>> toc.h1.branches[0] == toc.h1[0] == toc.h1.h2
-True
->>> list(toc.h1.h2s)[1] == toc.h1[1]
-True
->>> toc.h1[1]
-Chapter 2 : Chikin Scream
->>> list(toc.h1[1].h3s)
-[Plopping, I Scream]
->>> list(map(str, toc.h1[1].h3s))
-['Plopping', 'I Scream']
-```
-
-## Installation
-
-Install via pip.
-
-```
-pip install md2py
-```
-
-## Additional Notes
-
-- Behind the scenes, the md2py uses `BeautifulSoup`. All md2py objects have a
-`source` attribute containing a BeautifulSoup object.
+## License 
+The [original project](https://github.com/alvinwan/md2py) was licensed under the Apache 2.0 License and a copy is provided in this repo as well. All the files changed are listed in the CHANGELOG. 
