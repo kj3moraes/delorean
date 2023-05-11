@@ -2,7 +2,7 @@
 
 markdown-tree is a fork of [md2py](https://github.com/alvinwan/md2py) which is no longer maintained. This library adds far more functionality and broadens the scope of the older libary. The full list of features can be found under [Features](## Features)
 
-## Install 
+## Install
 
 Install via pip
 ```bash

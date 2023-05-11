@@ -1,4 +1,4 @@
-from md2py import md2py, TreeOfContents
+from markdown_tree import TreeOfContents, md2py
 
 chikin = open('tests/samples/chikin.md').read()
 iscream = open('tests/samples/iscream.md').read()
