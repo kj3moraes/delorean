@@ -80,6 +80,8 @@ class TreeOfContents:
                 parsed.append({'root':branch.string, 'source':branch})
             else:
                 parsed[-1].setdefault('descendants', []).append(branch)
+        if self.depth == None:
+            return [TOC(depth=1, **kwargs) for kwargs in parsed]
         return [TOC(depth=self.depth+1, **kwargs) for kwargs in parsed]
 
     def __getattr__(self, attr, *default):
@@ -123,6 +125,7 @@ class TreeOfContents:
         """
         Creates abstraction using HTML
         """
+        print(html)
         source = BeautifulSoup(html, 'html.parser', *args, **kwargs)
         return TOC('[document]',
                     source=source,
