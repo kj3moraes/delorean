@@ -75,3 +75,23 @@ class MarkdownTree:
         
     def get_root(self):
         return self.root
+    
+class MarkdownForest:
+    
+    def __init__(self):
+        self.trees = []
+        self.treeCount = 0
+        
+    def __str__(self):
+        return "\n".join(map(str, self.trees))
+    
+    def __getitem__(self, index:int):
+        return self.trees[index]
+    
+    def __len__(self):
+        return self.treeCount
+    
+    def add_tree(self, tree:MarkdownTree):
+        self.trees.append(tree)
+        self.treeCount += 1
+    
