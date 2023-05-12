@@ -27,7 +27,7 @@ class TextNode(Node):
 
 class HeaderNode(Node):
     
-    def __init__(self, header:str, parent=None):
+    def __init__(self, header:str, parent:Node=None):
         self.header = header
         self.parent = parent
         self.children = []
@@ -41,7 +41,7 @@ class HeaderNode(Node):
     def get_parent(self):
         return self.parent
     
-    def add_child(self, child):
+    def add_child(self, child:Node):
         self.children.append(child)
         
 class MarkdownTree:
@@ -54,7 +54,7 @@ class MarkdownTree:
         
     def __str__(self):
         # Helper function to print the tree
-        def printTree(root, markerStr="+- ", levelMarkers=[]):
+        def printTree(root:Node, markerStr="+- ", levelMarkers=[]):
             returnStr = ""
             emptyStr = " " * len(markerStr)
             connectionStr = "|" + emptyStr[:-1]
