@@ -1,6 +1,6 @@
 from markdown import markdownFromFile, markdown
 from bs4 import BeautifulSoup
-
+import re
 
 class TreeOfContents:
     """Tree abstraction for markdown source"""
@@ -118,6 +118,42 @@ class TreeOfContents:
         """
         Creates abstraction using path to file
         """
+        
+        
+        def clean_headers(markdown_text):
+            """ Remove bold and italics formatting from headers
+            """
+            # Regular expressions to match bold and italics formatting
+            bold_pattern = re.compile(r'\*\*(.*?)\*\*')
+            alt_bold_pattern = re.compile(r'__(.*?)__')
+            italics_pattern = re.compile(r'\*(.*?)\*')
+            alt_italics_pattern = re.compile(r'_(.*?)_')
+
+            # Split the Markdown text into lines
+            lines = markdown_text.splitlines()
+
+            # Iterate through the lines
+            for i in range(len(lines)):
+                line = lines[i]
+
+                # Check if the line starts with one or more hash characters (header)
+                if line.startswith('#'):
+                    # Remove bold formatting
+                    line = bold_pattern.sub(r'\1', line)
+                    line = alt_bold_pattern.sub(r'\1', line)
+
+                    # Remove italics formatting
+                    line = italics_pattern.sub(r'\1', line)
+                    line = alt_italics_pattern.sub(r'\1', line)
+
+                    # Update the line in the list of lines
+                    lines[i] = line
+
+            # Join the modified lines back into a single string
+            modified_text = '\n'.join(lines)
+            return modified_text
+    
+        md = clean_headers(md)
         return TOC.fromHTML(markdown(md, *args, **kwargs))
 
     @staticmethod
