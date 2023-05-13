@@ -2,17 +2,30 @@
 from markdown_tree import *
 import unittest
 
-def test_ordered_hierarchy():
-    test_str = """# Header 1
-## Header 2.1
-Some text here and there
-### Header 3
-Some more text here and there
-## Header 2.2
-Thats' all folks!
-    """
-    a = treeify(test_str)
-    print(a)
-    print("The header is ", a[0].get_root().__str__())
-    assert str(a[0].get_root()) == "(h1) Header 1"
-    assert str(a[0].get_root()[0]) == "(h2) Header 2.1"
+ORDERED_HIERARCHY = open("tests/docs/test_ordered.md", "r").read()
+
+def test_treeify_ordered_hierarchy():
+
+    a = treeify(ORDERED_HIERARCHY)
+    primary_tree = a[0]
+    assert str(primary_tree.get_root()) == "Header 1"
+    assert str(primary_tree.get_root()[0]) == "Header 2.1"
+    assert repr(primary_tree.get_root()[0][0]) == "Some text here and there"
+    assert str(primary_tree.get_root()[0][1]) == "Header 3"
+    assert str(primary_tree.get_root()[1]) == "Header 2.2"
+    assert repr(primary_tree.get_root()[1][0]) == "Thats' all folks!"
+    
+def test_treeify_unordered_hierarchy():
+    pass
+
+def test_treeify_mixed_hierarchy():
+    pass
+
+def test_markdownify_ordered_hierarchy():
+    pass
+
+def test_markdownify_unordered_hierarchy():
+    pass
+
+def test_both_ordered_hierarchy():
+    pass
