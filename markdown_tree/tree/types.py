@@ -5,32 +5,31 @@ class Node:
            
     def __str__(self):
         return f"{self.__class__.__name__}()"
-
+    
+    def get_parent(self):
+        return self.parent
 
 class TextNode(Node):
     
     FRACTION_PRINTABLE = 0.5
     
     def __init__(self, text:str, parent=None):
+        super(parent)
         self.text = text
-        self.parent = parent
         
     def __getitem__(self, index:int):
         return self.text[index]
            
     def __str__(self):
         return self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
-    
-    def get_parent(self):
-        return self.parent
 
 
 class HeaderNode(Node):
     
     def __init__(self, header:str, headerNumber:int=1, parent:Node=None):
+        super(parent)
         self.header = header
         self.headerNumber = headerNumber
-        self.parent = parent
         self.children = []
         
     def __str__(self):
@@ -38,9 +37,6 @@ class HeaderNode(Node):
     
     def __getitem__(self, index:int):
         return self.children[index]
-    
-    def get_parent(self):
-        return self.parent
     
     def add_child(self, child:Node):
         self.children.append(child)
