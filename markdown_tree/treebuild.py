@@ -1,4 +1,4 @@
-from markdown import markdownFromFile, markdown
+from markdown import markdown
 from bs4 import BeautifulSoup
 import re
 

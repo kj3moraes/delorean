@@ -1,12 +1,17 @@
-from .markdown_tree import treeify
+from .markdown_tree import *
 from .tree.types import *
 
-def markdown_tree(md:str, *args, **kwargs) -> MarkdownForest:
+def treeify(md:str, *args, **kwargs) -> MarkdownForest:
     """
     Converts markdown file to a Python object (MarkdownForest).
     """
-    return markdown_tree(md, *args, **kwargs)
+    
+    return mdtreeify(md, *args, **kwargs)
 
 def mardownify(tree:MarkdownForest, *args, **kwargs) -> str:
+    """
+    Converts Python object (MarkdownForest) to markdown file.
+    """
     
-    pass
+    return mdtextify(tree, *args, **kwargs)
+
