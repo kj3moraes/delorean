@@ -9,7 +9,7 @@ class Node:
 
 class TextNode(Node):
     
-    FRACTION_PRINTABLE = 0.25
+    FRACTION_PRINTABLE = 0.5
     
     def __init__(self, text:str, parent=None):
         self.text = text
@@ -27,13 +27,14 @@ class TextNode(Node):
 
 class HeaderNode(Node):
     
-    def __init__(self, header:str, parent:Node=None):
+    def __init__(self, header:str, headerNumber:int=1, parent:Node=None):
         self.header = header
+        self.headerNumber = headerNumber
         self.parent = parent
         self.children = []
         
     def __str__(self):
-        return self.header
+        return f"(h{self.headerNumber}) {self.header}"
     
     def __getitem__(self, index:int):
         return self.children[index]
@@ -84,7 +85,7 @@ class MarkdownForest:
         self.treeCount = 0
         
     def __str__(self):
-        return "\n".join(map(str, self.trees))
+        return f"{self.documentName}\n".join(map(str, self.trees))
     
     def __getitem__(self, index:int):
         return self.trees[index]
