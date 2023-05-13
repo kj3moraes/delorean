@@ -23,7 +23,7 @@ VERSION = '0.2.0'
 DESCRIPTION = 'A package to convert between Markdown and a forest data structure for processing.'
 
 setup(
-    name = "markdown-tree",
+    name = "mdforest",
     version = VERSION,
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
