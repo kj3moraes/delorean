@@ -1,11 +1,12 @@
-from treebuild import TreeOfContents
-from tree.types import MarkdownTree
+from .treeify import treeify
+from .tree.types import *
 
-def treeify(md:str, *args, **kwargs):
+def treeify(md:str, *args, **kwargs) -> MarkdownForest:
     """
-    Converts markdown file to a Python object
+    Converts markdown file to a Python object (MarkdownForest).
     """
-    return TreeOfContents.fromMarkdown(md, *args, **kwargs)
+    return treeify(md, *args, **kwargs)
 
-def mardownify(tree:MarkdownTree):
+def mardownify(tree:MarkdownForest, *args, **kwargs) -> str:
+    
     pass

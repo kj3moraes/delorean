@@ -85,7 +85,7 @@ class MarkdownForest:
         self.treeCount = 0
         
     def __str__(self):
-        return f"{self.documentName}\n".join(map(str, self.trees))
+        return self.documentName + "\n".join(map(str, self.trees))
     
     def __getitem__(self, index:int):
         return self.trees[index]

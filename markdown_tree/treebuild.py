@@ -161,7 +161,7 @@ class TreeOfContents:
         """
         Creates abstraction using HTML
         """
-        print(html)
+        
         source = BeautifulSoup(html, 'html.parser', *args, **kwargs)
         return TOC('[document]',
                     source=source,
