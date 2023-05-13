@@ -1,3 +1,6 @@
+
+
+![icon](media/forest-icon.png) 
 # mdforest - Markdown Forest
 
 A library to convert Markdown documents into tree data structures and vice versa. There is greater functionality available to modify, prune, add and delete parts of documents when there are in the MarkdownTree structure. 
