@@ -1,6 +1,7 @@
 import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
+from pathlib import Path
 
 class PyTest(TestCommand):
 
@@ -19,7 +20,10 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-VERSION = '1.0.0'
+this_directory = Path(__file__).parent
+LONG_DESCRIPTION = (this_directory / "README.md").read_text()
+
+VERSION = '1.0.1'
 DESCRIPTION = 'A package to convert between Markdown and a forest data structure for effecient processing.'
 
 setup(
@@ -28,6 +32,9 @@ setup(
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
     description = DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    long_description_content_type="Markdown",
+    readme="README.md",
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/markdown-tree",
     packages = ['markdown_tree'],
