@@ -48,6 +48,9 @@ class HeaderNode(Node):
     def __getitem__(self, index:int):
         return self.children[index]
     
+    def get_header_level(self):
+        return self.headerNumber
+    
     def add_child(self, child:Node):
         self.children.append(child)
         

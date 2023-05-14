@@ -1,5 +1,5 @@
-from .treebuild import TreeOfContents
-from .tree.types import *
+from treebuild import TreeOfContents
+from tree.types import *
 
 def generateRootNodeFromContents(currTree:TreeOfContents, parent:Node=None) -> Node:
     """ Function to generate the tree of a specfic header's section.
@@ -34,8 +34,26 @@ def mdtreeify(md:str, *args, **kwargs) -> MarkdownForest:
         
     return returnForest
     
-def mdtextify(tree:MarkdownForest, *args, **kwargs) -> str:
-    pass
+def convertRootToText(rootNode: Node) -> str:
+    
+    # BASE CASE: We just have text node.
+    if isinstance(rootNode, TextNode):
+        return repr(rootNode) + "\n"
+    
+    headerLevel = rootNode.get_header_level()
+    returnString = '#'*headerLevel + " " + str(rootNode) + "\n"
+    for i, child in enumerate(rootNode):
+        returnString += convertRootToText(child)
+    
+    return returnString    
+        
+
+def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
+    
+    finalText = ""
+    for i, tree in enumerate(forest):
+        finalText += convertRootToText(tree.get_root())
+    return finalText
         
 # test = """# Header 1
 # ## Header 2.1
@@ -46,13 +64,23 @@ def mdtextify(tree:MarkdownForest, *args, **kwargs) -> str:
 # Thats' all folks!
 # """
 
-# test2 = """
-# # asdasd
-# ok then
-# ## 1238123
-# """
+test2 = """
+## let me try
 
-# a = mdtreeify(test)
+# asdasd
+ok then
+## 1238123
+
+# and then more 
+## wow
+
+
+"""
+
+a = mdtreeify(test2)
+ret_test2 = mdtextify(a)
+
+print(ret_test2)
 
 # print(a)
 # a[0].root.add_child(TextNode("asdasd", parent=a[0].root))
