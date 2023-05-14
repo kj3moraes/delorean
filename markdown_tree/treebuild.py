@@ -118,11 +118,12 @@ class TreeOfContents:
         """
         Creates abstraction using path to file
         """
-        
-        
+                
         def clean_headers(markdown_text):
-            """ Remove bold and italics formatting from headers
+            """ 
+            Remove bold and italics formatting from headers
             """
+            
             # Regular expressions to match bold and italics formatting
             bold_pattern = re.compile(r'\*\*(.*?)\*\*')
             alt_bold_pattern = re.compile(r'__(.*?)__')

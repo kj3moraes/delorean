@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Node:
     
     def __init__(self):
@@ -21,6 +24,9 @@ class TextNode(Node):
     def __str__(self):
         return self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
 
+    def __repr__(self) -> str:
+        return self.text
+
 
 class HeaderNode(Node):
     
@@ -31,6 +37,9 @@ class HeaderNode(Node):
         self.children = []
         
     def __str__(self):
+        return self.header
+    
+    def __repr__(self) -> str:
         return f"(h{self.headerNumber}) {self.header}"
     
     def __len__(self):
@@ -39,6 +48,9 @@ class HeaderNode(Node):
     def __getitem__(self, index:int):
         return self.children[index]
     
+    def get_header_level(self):
+        return self.headerNumber
+    
     def add_child(self, child:Node):
         self.children.append(child)
         
@@ -46,9 +58,6 @@ class MarkdownTree:
     
     def __init__(self, root:Node):
         self.root = root
-        self.count = 0
-        self.headerCount = 0
-        self.wordCount = 0
         
     def __str__(self):
         # Helper function to print the tree

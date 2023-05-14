@@ -19,11 +19,11 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-VERSION = '0.1.0'
-DESCRIPTION = 'A package to convert markdown into extensible Python data structure'
+VERSION = '1.0.0'
+DESCRIPTION = 'A package to convert between Markdown and a forest data structure for effecient processing.'
 
 setup(
-    name = "markdown-tree",
+    name = "mdforest",
     version = VERSION,
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
