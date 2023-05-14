@@ -2,7 +2,7 @@ from markdown import markdown
 from bs4 import BeautifulSoup
 import re
 
-class TreeOfContents:
+class __TreeOfContents:
     """Tree abstraction for markdown source"""
 
     source_type = BeautifulSoup
@@ -155,17 +155,10 @@ class TreeOfContents:
             return modified_text
     
         md = clean_headers(md)
-        return TOC.fromHTML(markdown(md, *args, **kwargs))
-
-    @staticmethod
-    def fromHTML(html, *args, **kwargs):
-        """
-        Creates abstraction using HTML
-        """
-        
-        source = BeautifulSoup(html, 'html.parser', *args, **kwargs)
+        html_convert = markdown(md, *args, **kwargs)
+        source = BeautifulSoup(html_convert, 'html.parser', *args, **kwargs)
         return TOC('[document]',
                     source=source,
                     descendants=source.children)
 
-TOC = TreeOfContents
+TOC = __TreeOfContents

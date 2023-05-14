@@ -1,7 +1,7 @@
-from .treebuild import TreeOfContents
+from .treebuild import __TreeOfContents
 from .tree.types import *
 
-def generateRootNodeFromContents(currTree:TreeOfContents, parent:Node=None) -> Node:
+def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) -> Node:
     """ Function to generate the tree of a specfic header's section.
     """    
     # BASE CASE: If there is no depth, then it is just a paragraph
@@ -27,7 +27,7 @@ def mdtreeify(md:str, *args, **kwargs) -> MarkdownForest:
     """
 
     returnForest = MarkdownForest("test2")
-    toc =  TreeOfContents.fromMarkdown(md, *args, **kwargs)
+    toc =  __TreeOfContents.fromMarkdown(md, *args, **kwargs)
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))

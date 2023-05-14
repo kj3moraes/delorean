@@ -8,7 +8,7 @@ def treeify(md:str, *args, **kwargs) -> MarkdownForest:
     
     return mdtreeify(md, *args, **kwargs)
 
-def mardownify(tree:MarkdownForest, *args, **kwargs) -> str:
+def markdownify(tree:MarkdownForest, *args, **kwargs) -> str:
     """
     Converts Python object (MarkdownForest) to markdown file.
     """

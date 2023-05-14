@@ -22,7 +22,9 @@ def test_treeify_mixed_hierarchy():
     pass
 
 def test_markdownify_ordered_hierarchy():
-    pass
+    a = treeify(ORDERED_HIERARCHY)
+    ret_ordered = markdownify(a)
+    assert ORDERED_HIERARCHY == ret_ordered
 
 def test_markdownify_unordered_hierarchy():
     pass
