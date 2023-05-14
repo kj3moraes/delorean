@@ -19,8 +19,8 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-VERSION = '0.2.0'
-DESCRIPTION = 'A package to convert between Markdown and a forest data structure for processing.'
+VERSION = '1.0.0'
+DESCRIPTION = 'A package to convert between Markdown and a forest data structure for effecient processing.'
 
 setup(
     name = "mdforest",
