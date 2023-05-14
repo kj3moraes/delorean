@@ -1,9 +1,8 @@
+![icon](media/forest-icon-display.png)
 
-
-![icon](media/forest-icon.png) 
 # mdforest - Markdown Forest
 
-A library to convert Markdown documents into tree data structures and vice versa. There is greater functionality available to modify, prune, add and delete parts of documents when there are in the MarkdownTree structure. 
+A library to convert Markdown documents into tree data structures and vice versa. There is greater functionality available to modify, prune, add and delete parts of documents when there are in the MarkdownTree structure.
 
 markdown-tree is a fork of [md2py](https://github.com/alvinwan/md2py) which is no longer maintained. This library adds far more functionality and broadens the scope of the older libary. The full list of features can be found under [Features](## Features)
 
@@ -30,16 +29,19 @@ Take, for example, the following markdown file.
 ```markdown
 # Chikin Tales
 
+Once there was a chikin.
+
 ## Chapter 1 : Chikin Fly
 
 Chickens don't fly. They do only the following:
 
 - waddle
-- plop
+- plop 
+
 
 ### Waddling
 
-A waddle is what these birds do. 
+A waddle is what these birds do.
 
 ## Chapter 2 : Chikin Scream
 
@@ -58,15 +60,21 @@ markdown file one level at a time. Running `md2py` on the above markdown file
 will generate a tree, abstracting the below structure.
 
 ```text
-          Chikin Tales
-          /           \
-    Chapter 1       Chapter 2
-      /                 |
-  Waddling            Plopping
-     |                  |
-     |                  |        
-  A waddle...           |          
-                    Plopping inv...
+               Chikin Tales
+              /     \       \
+             /       \       \ 
+       (Once th..)    |       \
+                      |        \
+                  Chapter 1     \
+                  /     |     Chapter 2   
+                 /      |         |
+       (Chickens do..)  |       Plopping
+                        |         |
+                     Waddling   (Plopping...)
+                        |
+                    (A waddle...)
+
+
 ```
 
 For the full usage guide, access the SAMPLES.md file.
