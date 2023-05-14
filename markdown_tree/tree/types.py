@@ -39,19 +39,23 @@ class HeaderNode(Node):
     def __str__(self):
         return self.header
     
-    def __repr__(self) -> str:
+    def __repr__(self):
         return f"(h{self.headerNumber}) {self.header}"
     
     def __len__(self):
         return len(self.children)
     
-    def __getitem__(self, index:int):
+    def __iter__(self):
+        for elem in self.children:
+            yield elem
+    
+    def __getitem__(self, index:int) -> Node:
         return self.children[index]
     
-    def get_header_level(self):
+    def get_header_level(self) -> int:
         return self.headerNumber
     
-    def add_child(self, child:Node):
+    def add_child(self, child:Node) -> None:
         self.children.append(child)
         
 class MarkdownTree:
