@@ -87,7 +87,7 @@ class MarkdownTree:
     
 class MarkdownForest:
     
-    def __init__(self, documentName:str="[document]", metadata=None):
+    def __init__(self, documentName:str="[document]", metadata:dict=None):
         self.documentName = documentName
         self.metadata = metadata
         self.trees = []
