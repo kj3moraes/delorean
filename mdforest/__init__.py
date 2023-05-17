@@ -1,4 +1,4 @@
-from .markdown_tree import *
+from .mdforest import *
 from .tree.types import *
 
 def treeify(md:str, *args, **kwargs) -> MarkdownForest:
