@@ -1,5 +1,5 @@
 
-from markdown_tree import *
+from mdforest import *
 import unittest
 
 ORDERED_HIERARCHY = open("tests/docs/test_ordered.md", "r").read()

@@ -23,7 +23,7 @@ class PyTest(TestCommand):
 this_directory = Path(__file__).parent
 LONG_DESCRIPTION = (this_directory / "README.md").read_text()
 
-VERSION = '1.0.1'
+VERSION = '1.2.0'
 DESCRIPTION = 'A package to convert between Markdown and a forest data structure for effecient processing.'
 
 setup(
@@ -37,9 +37,9 @@ setup(
     readme="README.md",
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/markdown-tree",
-    packages = ['markdown_tree'],
+    packages = ['mdforest', 'mdforest.tree'],
     cmdclass = {'test': PyTest},
-    tests_require = ['pytest'],
+    tests_require = ['unittest', 'pytest'],
     install_requires = ['markdown', 'beautifulsoup4'],
     download_url = 'https://github.com/kj3moraes/markdown-tree/archive/%s.zip' % VERSION,
     classifiers = [

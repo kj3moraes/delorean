@@ -1,5 +1,7 @@
-from .treebuild import __TreeOfContents
-from .tree.types import *
+import frontmatter 
+import re
+from treebuild import __TreeOfContents
+from tree.types import *
 
 def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) -> Node:
     """ Function to generate the tree of a specfic header's section.
@@ -19,15 +21,16 @@ def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) ->
         else:
             rootNode.add_child(generateRootNodeFromContents(child, parent=rootNode))
             
-    return rootNode
+    return rootNode    
 
-def mdtreeify(md:str, *args, **kwargs) -> MarkdownForest:
+def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """
     Converts markdown file to a MarkdownForest
     """
-
-    returnForest = MarkdownForest("test2")
-    toc =  __TreeOfContents.fromMarkdown(md, *args, **kwargs)
+    
+    post = frontmatter.loads(md)
+    returnForest = MarkdownForest(name, metadata=post.metadata)
+    toc =  __TreeOfContents.fromMarkdown(post.content, *args, **kwargs)
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))
@@ -40,6 +43,7 @@ def convertRootToText(rootNode: Node) -> str:
     if isinstance(rootNode, TextNode):
         return repr(rootNode) + "\n"
     
+    # For the header node
     headerLevel = rootNode.get_header_level()
     returnString = '#'*headerLevel + " " + str(rootNode) + "\n"
     for i, child in enumerate(rootNode):
@@ -47,10 +51,23 @@ def convertRootToText(rootNode: Node) -> str:
     
     return returnString    
         
+def convertDictToMetadata(metadata:dict) -> str:
+    yaml = "---\n"
+    for key, value in metadata.items():
+        print(f"{key}: {value}")
+        if isinstance(value, list):
+            yaml += f"{key}: \n"
+            for elem in value:
+                yaml += f"  - {elem}\n"
+            continue
+        yaml += f"{key}: {value}\n"
+    yaml += "---\n"
+    return yaml
 
 def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
+    print(forest.metadata)
     
-    finalText = ""
+    finalText = convertDictToMetadata(forest.metadata)
     for i, tree in enumerate(forest):
         finalText += convertRootToText(tree.get_root())
     return finalText
@@ -65,6 +82,11 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
 # """
 
 # test2 = """
+# ---
+# tags: [test, test2, test3]
+# author: Keane Moraes
+# time: 2
+# ---
 # # Header 1
 # ## Header 2.1
 # Some text here and there
@@ -74,7 +96,9 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
 # Thats' all folks!
 # """
 
-# a = mdtreeify(test2)
+# a = mdtreeify("test2", test2)
+# print(a)
+# print(mdtextify(a))
 # print(a)
 # ret_test2 = mdtextify(a)
 
