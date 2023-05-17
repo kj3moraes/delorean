@@ -37,7 +37,7 @@ setup(
     readme="README.md",
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/markdown-tree",
-    packages = ['mdforest', 'mdforest.tree', 'mdforest.tree.types'],
+    packages = ['mdforest', 'mdforest.tree'],
     cmdclass = {'test': PyTest},
     tests_require = ['unittest', 'pytest'],
     install_requires = ['markdown', 'beautifulsoup4'],
