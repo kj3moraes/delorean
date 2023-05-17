@@ -1,5 +1,3 @@
-from typing import Any
-
 
 class Node:
     
@@ -89,8 +87,9 @@ class MarkdownTree:
     
 class MarkdownForest:
     
-    def __init__(self, documentName:str="[document]"):
+    def __init__(self, documentName:str="[document]", metadata=None):
         self.documentName = documentName
+        self.metadata = metadata
         self.trees = []
         self.treeCount = 0
         
@@ -102,7 +101,10 @@ class MarkdownForest:
     
     def __len__(self):
         return self.treeCount
-    
+
+    def get_metadata(self):
+        return self.metadata
+
     def add_tree(self, tree:MarkdownTree):
         self.trees.append(tree)
         self.treeCount += 1
