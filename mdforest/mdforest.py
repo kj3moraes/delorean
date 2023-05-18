@@ -103,25 +103,32 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
 # Thats' all folks!
 # """
 
-# test2 = """
-# ---
-# tags: [test, test2, test3]
-# author: Keane Moraes
-# time: 2
-# ---
-# # Header 1
-# ## Header 2.1
-# Some [[text]] here and there #asd
-# ### Header 3
-# Some more text here and there
-# ## Header 2.2
-# Thats' all folks!
-# """
+test2 = """
+---
+author: Keane Moraes
+id: 1
+tags:
+- tag1
+- tag2
+---
 
-# print(find_tags(test2))
+# Appendices 
 
-# a = mdtreeify("test2", test2)
-# print(a)
+## Appendix I: The Ecology of Dune.
+
+## Appendix II: The Religion of Dune.
+
+## Appendix III: Report on Bene Gesserit Motives and Purposes.
+
+## Appendix IV: The Almanak eb-Ashraf (Selected Excerpts of the Noble Houses)
+
+# Terminology of the Imperium
+"""
+
+print(find_tags(test2))
+
+a = mdtreeify("test2", test2)
+print(a)
 # print(mdtextify(a))
 # print(a)
 # ret_test2 = mdtextify(a)
