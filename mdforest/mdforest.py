@@ -4,7 +4,7 @@ from treebuild import __TreeOfContents
 from tree.types import *
 
 def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) -> Node:
-    """ Function to generate the tree of a specfic header's section.
+    """ Function to generate the tree of a specific header's section.
     """    
     # BASE CASE: If there is no depth, then it is just a paragraph
     if currTree.depth == None:
@@ -23,18 +23,40 @@ def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) ->
             
     return rootNode    
 
+def find_backlinks(input_text:str) -> list:
+    backlinks = []
+
+    # Regular expression pattern to match backlinks
+    pattern = r'\[\[(.*?)\]\]'
+    backlinks = re.findall(pattern, input_text)
+
+    return backlinks
+
+def find_tags(input_text:str) -> list:
+    tags = []
+
+    # Regular expression pattern to match backlinks
+    pattern = r'#([a-zA-Z0-9_]+)'
+    tags = re.findall(pattern, input_text)
+    return tags
+
 def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """
     Converts markdown file to a MarkdownForest
     """
     
     post = frontmatter.loads(md)
+    backlinks = find_backlinks(post.content)
+    tags = find_tags(post.content)
     returnForest = MarkdownForest(name, metadata=post.metadata)
+    for backlink in backlinks:
+        returnForest.add_backlink(backlink)
+    for tag in tags:
+        returnForest.add_tag(tag)
     toc =  __TreeOfContents.fromMarkdown(post.content, *args, **kwargs)
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))
-        
     return returnForest
     
 def convertRootToText(rootNode: Node) -> str:
@@ -81,20 +103,22 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
 # Thats' all folks!
 # """
 
-# test2 = """
-# ---
-# tags: [test, test2, test3]
-# author: Keane Moraes
-# time: 2
-# ---
-# # Header 1
-# ## Header 2.1
-# Some text here and there
-# ### Header 3
-# Some more text here and there
-# ## Header 2.2
-# Thats' all folks!
-# """
+test2 = """
+---
+tags: [test, test2, test3]
+author: Keane Moraes
+time: 2
+---
+# Header 1
+## Header 2.1
+Some [[text]] here and there #asd
+### Header 3
+Some more text here and there
+## Header 2.2
+Thats' all folks!
+"""
+
+print(find_tags(test2))
 
 # a = mdtreeify("test2", test2)
 # print(a)
