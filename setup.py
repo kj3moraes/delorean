@@ -20,11 +20,11 @@ class PyTest(TestCommand):
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
 
-this_directory = Path(__file__).parent
-LONG_DESCRIPTION = (this_directory / "README.md").read_text()
+this_directory = Path(__file__)
+LONG_DESCRIPTION = (this_directory.parent / "media" / "README.rst").read_text()
 
-VERSION = '1.2.0'
-DESCRIPTION = 'A package to convert between Markdown and a forest data structure for effecient processing.'
+VERSION = '1.3.0'
+DESCRIPTION = 'A package to convert between Markdown and a forest data structure for efficient processing.'
 
 setup(
     name = "mdforest",
@@ -40,7 +40,7 @@ setup(
     packages = ['mdforest', 'mdforest.tree'],
     cmdclass = {'test': PyTest},
     tests_require = ['unittest', 'pytest'],
-    install_requires = ['markdown', 'beautifulsoup4'],
+    install_requires = ['markdown', 'beautifulsoup4', 'python-frontmatter'],
     download_url = 'https://github.com/kj3moraes/markdown-tree/archive/%s.zip' % VERSION,
     classifiers = [
         "Topic :: Utilities",

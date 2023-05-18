@@ -91,6 +91,8 @@ class MarkdownForest:
         self.documentName = documentName
         self.metadata = metadata
         self.trees = []
+        self.backlinks = []
+        self.tags = []
         self.treeCount = 0
         
     def __str__(self):
@@ -108,4 +110,16 @@ class MarkdownForest:
     def add_tree(self, tree:MarkdownTree):
         self.trees.append(tree)
         self.treeCount += 1
+    
+    def add_backlink(self, backlink:str):
+        self.backlinks.append(backlink)
+    
+    def get_backlinks(self):
+        return self.backlinks
+    
+    def add_tag(self, tag:str):
+        self.tags.append(tag)
+        
+    def get_tags(self):
+        return self.tags
 
