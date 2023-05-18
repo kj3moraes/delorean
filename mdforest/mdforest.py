@@ -29,7 +29,6 @@ def find_backlinks(input_text:str) -> list:
     # Regular expression pattern to match backlinks
     pattern = r'\[\[(.*?)\]\]'
     backlinks = re.findall(pattern, input_text)
-
     return backlinks
 
 def find_tags(input_text:str) -> list:
@@ -49,14 +48,17 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     backlinks = find_backlinks(post.content)
     tags = find_tags(post.content)
     returnForest = MarkdownForest(name, metadata=post.metadata)
+    
     for backlink in backlinks:
         returnForest.add_backlink(backlink)
     for tag in tags:
         returnForest.add_tag(tag)
+    
     toc =  __TreeOfContents.fromMarkdown(post.content, *args, **kwargs)
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))
+    
     return returnForest
     
 def convertRootToText(rootNode: Node) -> str:
@@ -93,48 +95,3 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
     for i, tree in enumerate(forest):
         finalText += convertRootToText(tree.get_root())
     return finalText
-        
-# test = """# Header 1
-# ## Header 2.1
-# Some text here and there
-# ### Header 3
-# Some more text here and there
-# ## Header 2.2
-# Thats' all folks!
-# """
-
-test2 = """
----
-author: Keane Moraes
-id: 1
-tags:
-- tag1
-- tag2
----
-
-# Appendices 
-
-## Appendix I: The Ecology of Dune.
-
-## Appendix II: The Religion of Dune.
-
-## Appendix III: Report on Bene Gesserit Motives and Purposes.
-
-## Appendix IV: The Almanak eb-Ashraf (Selected Excerpts of the Noble Houses)
-
-# Terminology of the Imperium
-"""
-
-print(find_tags(test2))
-
-a = mdtreeify("test2", test2)
-print(a)
-# print(mdtextify(a))
-# print(a)
-# ret_test2 = mdtextify(a)
-
-# print(ret_test2)
-
-# print(a)
-# a[0].root.add_child(TextNode("asdasd", parent=a[0].root))
-# print(a)
