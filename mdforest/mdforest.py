@@ -103,22 +103,22 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
 # Thats' all folks!
 # """
 
-test2 = """
----
-tags: [test, test2, test3]
-author: Keane Moraes
-time: 2
----
-# Header 1
-## Header 2.1
-Some [[text]] here and there #asd
-### Header 3
-Some more text here and there
-## Header 2.2
-Thats' all folks!
-"""
+# test2 = """
+# ---
+# tags: [test, test2, test3]
+# author: Keane Moraes
+# time: 2
+# ---
+# # Header 1
+# ## Header 2.1
+# Some [[text]] here and there #asd
+# ### Header 3
+# Some more text here and there
+# ## Header 2.2
+# Thats' all folks!
+# """
 
-print(find_tags(test2))
+# print(find_tags(test2))
 
 # a = mdtreeify("test2", test2)
 # print(a)
