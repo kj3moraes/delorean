@@ -1,7 +1,7 @@
 import frontmatter 
 import re
-from treebuild import __TreeOfContents
-from tree.types import *
+from .treebuild import __TreeOfContents
+from .tree.types import *
 
 def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) -> Node:
     """ Function to generate the tree of a specific header's section.
