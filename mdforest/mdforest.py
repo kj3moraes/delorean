@@ -14,16 +14,25 @@ def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) ->
     headerText = currTree.source.string
     currentHeaderLevel = currTree.getHeadingLevel(currTree.source)
     rootNode = HeaderNode(headerText, headerNumber=currentHeaderLevel, parent=parent)
-    
+
     for child in currTree.branches:
         if child.getHeadingLevel(child.source) == None:
-            rootNode.add_child(TextNode(child.source.string, parent=rootNode))
+            resultNode = TextNode(child.source.string, parent=rootNode)
+            corpus = resultNode.get_corpus()
+            rootNode.append_corpus(corpus)
         else:
-            rootNode.add_child(generateRootNodeFromContents(child, parent=rootNode))
-            
+            resultNode = generateRootNodeFromContents(child, parent=rootNode)
+            corpus = resultNode.get_corpus()
+            rootNode.add_child(resultNode)
+            rootNode.append_corpus(corpus)
+                
     return rootNode    
 
 def find_backlinks(input_text:str) -> list:
+    """ 
+    Function to find all backlinks in a given text.
+    """
+    
     backlinks = []
 
     # Regular expression pattern to match backlinks
@@ -32,6 +41,10 @@ def find_backlinks(input_text:str) -> list:
     return backlinks
 
 def find_tags(input_text:str) -> list:
+    """
+    Function to find all tags in a given text.
+    """
+    
     tags = []
 
     # Regular expression pattern to match backlinks
@@ -78,7 +91,6 @@ def convertRootToText(rootNode: Node) -> str:
 def convertDictToMetadata(metadata:dict) -> str:
     yaml = "---\n"
     for key, value in metadata.items():
-        print(f"{key}: {value}")
         if isinstance(value, list):
             yaml += f"{key}: \n"
             for elem in value:
@@ -89,7 +101,6 @@ def convertDictToMetadata(metadata:dict) -> str:
     return yaml
 
 def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
-    print(forest.metadata)
     
     finalText = convertDictToMetadata(forest.metadata)
     for i, tree in enumerate(forest):

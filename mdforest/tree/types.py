@@ -17,20 +17,28 @@ class TextNode(Node):
         self.text = text
         
     def __getitem__(self, index:int):
+        if index < 0 or index >= len(self.text):
+            raise IndexError("Index out of bounds")
         return self.text[index]
            
     def __str__(self):
-        return self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
-
-    def __repr__(self) -> str:
         return self.text
 
+    def __repr__(self) -> str:
+        return "(Text) " + self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
+    
+    def get_corpus(self) -> str:
+        return self.text
+    
+    def set_corpus(self, corpus:str) -> None:
+        self.text = corpus
 
 class HeaderNode(Node):
     
     def __init__(self, header:str, headerNumber:int=1, parent:Node=None):
         self.parent = parent
         self.header = header
+        self.corpus = "#" * headerNumber + " " + header + "\n\n"
         self.headerNumber = headerNumber
         self.children = []
         
@@ -50,6 +58,15 @@ class HeaderNode(Node):
     def __getitem__(self, index:int) -> Node:
         return self.children[index]
     
+    def set_corpus(self, corpus:str) -> None:
+        self.corpus = corpus
+    
+    def get_corpus(self) -> str:
+        return self.corpus
+    
+    def append_corpus(self, corpus:str) -> None:
+        self.corpus += corpus
+    
     def get_header_level(self) -> int:
         return self.headerNumber
     
@@ -60,6 +77,10 @@ class MarkdownTree:
     
     def __init__(self, root:Node):
         self.root = root
+        self.words = root.get_corpus().split()
+        self.wordCount = len(self.words)
+        self.vocab = set(self.words)
+        self.vocabSize = len(self.vocab)
         
     def __str__(self):
         # Helper function to print the tree
@@ -91,14 +112,16 @@ class MarkdownForest:
         self.documentName = documentName
         self.metadata = metadata
         self.trees = []
+        self.treeCount   = 0
         self.backlinks = []
         self.tags = []
-        self.treeCount = 0
         
     def __str__(self):
         return f"[{self.documentName}]\n" + "\n".join(map(str, self.trees))
     
     def __getitem__(self, index:int):
+        if index < 0 or index >= self.treeCount:
+            raise IndexError("Index out of bounds")
         return self.trees[index]
     
     def __len__(self):
