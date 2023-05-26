@@ -5,7 +5,7 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 LONG_DESCRIPTION = (this_directory / "README.rst").read_text()
 
-VERSION = '1.3.3'
+VERSION = '1.5.4'
 DESCRIPTION = 'A package to convert between Markdown and a forest data structure for efficient processing.'
 
 setup(
@@ -15,7 +15,6 @@ setup(
     author_email = 'lordvader3002@gmail.com',
     description = DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    readme="README.rst",
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/mdforest",
     packages = ['mdforest', 'mdforest.tree'],

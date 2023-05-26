@@ -39,22 +39,27 @@ def find_tags(input_text:str) -> list:
     tags = re.findall(pattern, input_text)
     return tags
 
+def find_metadata(input_text:str):
+    post = frontmatter.loads(input_text)
+    return post.metadata, post.content
+
 def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """
     Converts markdown file to a MarkdownForest
     """
     
-    post = frontmatter.loads(md)
-    backlinks = find_backlinks(post.content)
-    tags = find_tags(post.content)
-    returnForest = MarkdownForest(name, metadata=post.metadata)
+    meta, cont = find_metadata(md)
+    
+    backlinks = find_backlinks(cont)
+    tags = find_tags(cont)
+    returnForest = MarkdownForest(name, metadata=meta)
     
     for backlink in backlinks:
         returnForest.add_backlink(backlink)
     for tag in tags:
         returnForest.add_tag(tag)
     
-    toc =  __TreeOfContents.fromMarkdown(post.content, *args, **kwargs)
+    toc =  __TreeOfContents.fromMarkdown(cont, *args, **kwargs)
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))
