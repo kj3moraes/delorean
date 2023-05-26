@@ -30,10 +30,13 @@ def clean_markdown(md:str) -> str:
     # Remove HTML tags from the document
     markdown_text = soup.get_text()
     
-    # Remove links
+    # Remove links, images, and backlinks
     markdown_text = re.sub(r'!\[(.*?)\]\((.*?)\)', '', markdown_text)
-    markdown_text = re.sub(r'\[(.*?)\]\((.*?)\)', '', markdown_text)
-    markdown_text = markdown_text.replace('>', '')
+    markdown_text = re.sub(r'\[(.*?)\]\((.*?)\)', r'\1', markdown_text)
+    markdown_text = re.sub(r'\[\[(.*?)\]\]', r'\1', markdown_text)
+    
+    # Remove quotation marks
+    markdown_text = markdown_text.replace('>', '')  
     
     # Remove bold and italics formatting
     markdown_text = re.sub(r'\*\*(.*?)\*\*', r'\1', markdown_text)
