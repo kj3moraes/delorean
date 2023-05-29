@@ -1,6 +1,5 @@
 import os, sys
 import mdforest 
-import mdforest.tree as mdtree
 
 def generate_forest(path_to_md_file:str):
     
@@ -18,8 +17,6 @@ def generate_forest(path_to_md_file:str):
     
     
 # Iterate over all markdown files in the current directory
-for filename in os.listdir("."):
-    if filename.endswith(".md"):
-        generate_forest(filename)
+generate_forest("./plain.md")
         
 

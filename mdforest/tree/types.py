@@ -124,6 +124,10 @@ class MarkdownForest:
             raise IndexError("Index out of bounds")
         return self.trees[index]
     
+    def __iter__(self):
+        for tree in self.trees:
+            yield tree
+    
     def __len__(self):
         return self.treeCount
 

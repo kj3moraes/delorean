@@ -7,7 +7,7 @@ def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) ->
     """ Function to generate the tree of a specific header's section.
     """    
     # BASE CASE: If there is no depth, then it is just a paragraph
-    if currTree.depth == None:
+    if currTree.getHeadingLevel(currTree.source) == None:
         return TextNode(currTree.source.string, parent=parent)
     
     # Get the current header of the tree
