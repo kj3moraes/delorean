@@ -18,13 +18,12 @@ def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) ->
     for child in currTree.branches:
         if child.getHeadingLevel(child.source) == None:
             resultNode = TextNode(child.source.string, parent=rootNode)
-            corpus = resultNode.get_corpus()
-            rootNode.append_corpus(corpus)
         else:
             resultNode = generateRootNodeFromContents(child, parent=rootNode)
-            corpus = resultNode.get_corpus()
-            rootNode.add_child(resultNode)
-            rootNode.append_corpus(corpus)
+        
+        corpus = resultNode.get_corpus()
+        rootNode.add_child(resultNode)
+        rootNode.append_corpus(corpus)
                 
     return rootNode    
 

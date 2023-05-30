@@ -10,7 +10,7 @@ class Node:
 
 class TextNode(Node):
     
-    FRACTION_PRINTABLE = 0.5
+    FRACTION_PRINTABLE = 0.25
     
     def __init__(self, text:str, parent:Node=None):
         self.parent = parent
@@ -22,7 +22,7 @@ class TextNode(Node):
         return self.text[index]
            
     def __str__(self):
-        return self.text
+        return self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
 
     def __repr__(self) -> str:
         return "(Text) " + self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."

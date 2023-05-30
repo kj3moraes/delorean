@@ -11,6 +11,8 @@ tags:
 
 # Appendices 
 
+The appendix begins with an epigraph by Pardot Kynes in which he considers the kind of existence available when humans increase in number in a finite environment.
+
 ## Appendix I: The Ecology of Dune.
 This appendix details “the ecology of Dune.” It is heavily focused on the story of Pardot Kynes, Arrakis's first planetologist. 
 The appendix begins with an epigraph by Pardot Kynes in which he considers the kind of existence available when humans increase in number in a finite environment
@@ -44,3 +46,5 @@ His work for the Emperor included duties as an Imperial Agent during the Harkonn
 Count Fenring later joined the Emperor “in retirement on Salusa Secundus.”
 
 # Terminology of the Imperium
+
+Hello there
