@@ -1,14 +1,17 @@
 import frontmatter 
 import re
-from treebuild import __TreeOfContents
+from bs4 import BeautifulSoup
+from markdown import markdown
 from tree.types import *
+import mdast
+from treelib import Node, Tree
 
 # ==================================================================================================
-#                                           TEXTIFY
+#                                           TREEIFY
 # ==================================================================================================
 
 
-def generateRootNodeFromContents(currTree:__TreeOfContents, parent:Node=None) -> Node:
+def generateRootNodeFromContents(currTree, parent:Node=None) -> Node:
     """ Function to generate the tree of a specific header's section.
     """    
     # BASE CASE: If there is no depth, then it is just a paragraph
@@ -76,7 +79,8 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     for tag in tags:
         returnForest.add_tag(tag)
     
-    toc =  __TreeOfContents.fromMarkdown(cont, *args, **kwargs)
+    html = markdown.markdown(cont)
+    toc =  BeautifulSoup(html, 'html.parser')
     for tree in toc.branches:
         root = generateRootNodeFromContents(tree)
         returnForest.add_tree(MarkdownTree(root))
@@ -85,7 +89,7 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
 
 
 # ==================================================================================================
-#                                           TREEIFY
+#                                           TEXTIFY
 # ==================================================================================================
 
     
@@ -121,6 +125,39 @@ def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
     for i, tree in enumerate(forest):
         finalText += convertRootToText(tree.get_root())
     return finalText
+
+def parse_html_to_tree(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    headers = soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+
+    def build_tree(node):
+        result = []
+        for sibling in node.next_siblings:
+            if sibling.name in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+                break
+            if sibling.name == 'p':
+                result.append(sibling.get_text())
+        return result
+
+    forest = {}
+    for header in headers:
+        header_text = header.get_text()
+        forest[header_text] = build_tree(header)
+
+    return forest
+
+uniq_1 = 0
+
+tree = Tree()
+
+# Print the forest
+def print_tree(node, indent=''):
+    for item in node:
+        if isinstance(item, str):
+            print(indent + '|---', item)
+        elif isinstance(item, dict):
+            print(indent + item)
+            print_tree(node[item], indent + '|   ')
 
 text = """
 # A basic overview of Zettel and Zettelkasten
@@ -188,5 +225,37 @@ _This is one of several blog-post style pages that's not part of the [indexed no
 
 """
 
-forest = mdtreeify("kmag", text)
-print(forest)
+# ast = mdast.parse(text)
+# tree_list = []
+
+# parent_tree = None
+# current_tree = None
+
+# for node in ast.children:
+#     if isinstance(node, mdast.Heading):
+#         if current_tree:
+#             tree_list.append(current_tree)
+
+#         parent_tree = None
+#         current_tree = mdast.Tree(node)
+
+#     parent_tree = process_node(node, parent_tree)
+
+# if current_tree:
+#     tree_list.append(current_tree)
+
+# for tree in tree_list:
+#     tree.show()
+
+def process_node(node, parent_tree):
+    if isinstance(node, mdast.Heading):
+        header_level = node.depth
+        header_text = node.children[0].value.strip()
+        tree.create_node(f'{header_text}', f'{header_level}', parent=parent_tree)
+        parent_tree = f'{header_level}'
+
+    elif isinstance(node, mdast.Paragraph):
+        paragraph_text = node.children[0].value.strip()
+        tree.create_node(f'{paragraph_text}', f'{parent_tree}_p', parent=parent_tree)
+
+    return parent_tree
