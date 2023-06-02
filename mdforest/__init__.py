@@ -3,15 +3,26 @@ from .mdforest import *
 from .tree.types import *
 
 def treeify(name:str="[document]", md:str="", *args, **kwargs) -> MarkdownForest:
-    """
-    Converts markdown file to a Python object (MarkdownForest).
+    """Converts a markdown document into a MarkdownForest object.
+
+    Args:
+        name (str, optional): Name of the document. Defaults to "[document]".
+        md (str, optional): Contents of the document. Defaults to "".
+
+    Returns:
+        MarkdownForest: A forest representation of the markdown document.
     """
     
     return mdtreeify(name, md, *args, **kwargs)
 
 def markdownify(tree:MarkdownForest, *args, **kwargs) -> str:
-    """
-    Converts Python object (MarkdownForest) to markdown file.
+    """_summary_
+
+    Args:
+        tree (MarkdownForest): _description_
+
+    Returns:
+        str: _description_
     """
     
     return mdtextify(tree, *args, **kwargs)

@@ -156,6 +156,9 @@ class __TreeOfContents:
     
         md = clean_headers(md)
         html_convert = markdown(md, *args, **kwargs)
+        print(html_convert)
+        with open('test.html', 'w') as f:
+            f.write(html_convert)
         source = BeautifulSoup(html_convert, 'html.parser', *args, **kwargs)
         return TOC('[document]',
                     source=source,
