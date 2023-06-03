@@ -3,15 +3,14 @@ import re
 from bs4 import BeautifulSoup
 from markdown import markdown
 from tree.types import *
-import mdast
-from treelib import Node, Tree
+from treebuild import TOC
 
 # ==================================================================================================
 #                                           TREEIFY
 # ==================================================================================================
 
 
-def generateRootNodeFromContents(currTree, parent:Node=None) -> Node:
+def generateRootNodeFromContents(currTree:TOC, parent:Node=None) -> Node:
     """ Function to generate the tree of a specific header's section.
     """    
     # BASE CASE: If there is no depth, then it is just a paragraph
@@ -146,19 +145,6 @@ def parse_html_to_tree(html):
 
     return forest
 
-uniq_1 = 0
-
-tree = Tree()
-
-# Print the forest
-def print_tree(node, indent=''):
-    for item in node:
-        if isinstance(item, str):
-            print(indent + '|---', item)
-        elif isinstance(item, dict):
-            print(indent + item)
-            print_tree(node[item], indent + '|   ')
-
 text = """
 # A basic overview of Zettel and Zettelkasten
 
@@ -225,37 +211,6 @@ _This is one of several blog-post style pages that's not part of the [indexed no
 
 """
 
-# ast = mdast.parse(text)
-# tree_list = []
-
-# parent_tree = None
-# current_tree = None
-
-# for node in ast.children:
-#     if isinstance(node, mdast.Heading):
-#         if current_tree:
-#             tree_list.append(current_tree)
-
-#         parent_tree = None
-#         current_tree = mdast.Tree(node)
-
-#     parent_tree = process_node(node, parent_tree)
-
-# if current_tree:
-#     tree_list.append(current_tree)
-
-# for tree in tree_list:
-#     tree.show()
-
-def process_node(node, parent_tree):
-    if isinstance(node, mdast.Heading):
-        header_level = node.depth
-        header_text = node.children[0].value.strip()
-        tree.create_node(f'{header_text}', f'{header_level}', parent=parent_tree)
-        parent_tree = f'{header_level}'
-
-    elif isinstance(node, mdast.Paragraph):
-        paragraph_text = node.children[0].value.strip()
-        tree.create_node(f'{paragraph_text}', f'{parent_tree}_p', parent=parent_tree)
-
-    return parent_tree
+toc =  TOC.fromMarkdown(text)
+print(toc.source)
+root = generateRootNodeFromContents(toc)
