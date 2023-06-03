@@ -1,3 +1,5 @@
+import mdast
+
 def process_node(node, parent_tree):
     if isinstance(node, mdast.Heading):
         header_level = node.depth
