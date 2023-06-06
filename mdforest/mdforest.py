@@ -13,8 +13,10 @@ from treelib import Tree, Node
 def buildTree(inputText:str, parent_id) -> list:
     
     assert isinstance(inputText, str), "inputText must be a string"
-    assert inputText != "", "inputText cannot be an empty string"
-    
+    # assert inputText != "", "inputText cannot be an empty string"
+    if inputText == "":
+        return []
+
     HEADER_PATTERN = r'^#+\s+(.*)$'
     returnNodes = []
     
@@ -27,50 +29,53 @@ def buildTree(inputText:str, parent_id) -> list:
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
         returnNode = Node(tag=inputText[0:10], data=inputText)
-        returnNode.update_bpointer(parent_id)
+        returnNode.predecessor = parent_id
         return [returnNode]
     
     # IS THERE TEXT BEFORE THE FIRST HEADER?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        returnNodes.append(Node(tag=textBefore[0:10], data=textBefore))
+        textNode = Node(tag=textBefore[0:10], data=textBefore)
+        textNode.predecessor = parent_id
+        returnNodes.append(textNode)
     
-    # Get information on the starting header that will be searched from.
-    startHeader = indices[0]
-    startHeaderText = inputText[startHeader[0]:startHeader[1]]
-    startHeaderLevel = len(startHeaderText) - len(startHeaderText.replace("#", ""))
+    # FIXME: USE THE STACK STRUCTURE THAT JAIMIL SAID TO USE
+    # # Get information on the starting header that will be searched from.
+    # startHeader = indices[0]
+    # startHeaderText = inputText[startHeader[0]:startHeader[1]]
+    # startHeaderLevel = len(startHeaderText) - len(startHeaderText.replace("#", ""))
     
-    # create the header node with the current header.
-    startHeaderNode = Node(tag=startHeaderText, data=startHeaderText)
-    returnNodes.append(startHeaderNode)
-    startHeaderNode.update_bpointer(parent_id)
+    # # create the header node with the current header.
+    # startHeaderNode = Node(tag=startHeaderText, data=startHeaderText)
+    # startHeaderNode.predecessor = parent_id
+    # returnNodes.append(startHeaderNode)
+    # startHeaderNode.predecessor = parent_id
     
-    foundLower = False
-    for i in range(1, len(indices)):
-        currHeader = indices[i]
-        currHeaderText = inputText[currHeader[0]:currHeader[1]]
-        currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
+    # foundLower = False
+    # for i in range(1, len(indices)):
+    #     currHeader = indices[i]
+    #     currHeaderText = inputText[currHeader[0]:currHeader[1]]
+    #     currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
         
-        # CASE 1: If the current header level is greater than the starting header level then keep going.
-        if currHeaderLevel > startHeaderLevel:
-            continue
+    #     # CASE 1: If the current header level is greater than the starting header level then keep going.
+    #     if currHeaderLevel > startHeaderLevel:
+    #         continue
     
-        # CASE 2: If the current header level is less than the starting header level then we need to create a new tree.
-        elif currHeaderLevel < startHeaderLevel:
-            foundLower = True
-            textBetween = inputText[startHeader[1]:currHeader[0]].strip()
+    #     # CASE 2: If the current header level is less than the starting header level then we need to create a new tree.
+    #     elif currHeaderLevel < startHeaderLevel:
+    #         foundLower = True
+    #         textBetween = inputText[startHeader[1]:currHeader[0]].strip()
             
-            # Create the text nodes with the text between the headers
-            buildTree(textBetween, parent_id=startHeaderNode.identifier)
+    #         # Create the text nodes with the text between the headers
+    #         buildTree(textBetween, parent_id=startHeaderNode.identifier)
             
-            # Start building with the next half of the text
+    #         # Start building with the next half of the text
             
     
-    if not foundLower:
-        textBetween = inputText[startHeader[1]:].strip()
-        if textBetween != '':
-            buildTree(textBetween, parent_id=startHeaderNode.identifier)
-        return returnNodes
+    # if not foundLower:
+    #     textBetween = inputText[startHeader[1]:].strip()
+    #     buildTree(textBetween, parent_id=startHeaderNode.identifier)
+    #     return returnNodes
             
     
 
