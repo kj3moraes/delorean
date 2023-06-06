@@ -4,37 +4,77 @@ from bs4 import BeautifulSoup
 from markdown import markdown
 from tree.types import *
 from treebuild import TOC
+from treelib import Tree, Node
 
 # ==================================================================================================
 #                                           TREEIFY
 # ==================================================================================================
 
-
-def generateRootNodeFromContents(currTree:TOC, parent:Node=None) -> Node:
-    """ Function to generate the tree of a specific header's section.
-    """    
-    # BASE CASE: If there is no depth, then it is just a paragraph
-    if currTree.getHeadingLevel(currTree.source) == None:
-        return TextNode(currTree.source.string, parent=parent)
+def buildTree(inputText:str, parent_id) -> list:
     
-    # Get the current header of the tree
-    headerText = currTree.source.string
-    currentHeaderLevel = currTree.getHeadingLevel(currTree.source)
-    rootNode = HeaderNode(headerText, headerNumber=currentHeaderLevel, parent=parent)
-
-    for child in currTree.branches:
-        if child.getHeadingLevel(child.source) == None:
-            resultNode = TextNode(child.source.string, parent=rootNode)
-        else:
-            resultNode = generateRootNodeFromContents(child, parent=rootNode)
+    assert isinstance(inputText, str), "inputText must be a string"
+    assert inputText != "", "inputText cannot be an empty string"
+    
+    HEADER_PATTERN = r'^#+\s+(.*)$'
+    returnNodes = []
+    
+    matches = re.finditer(HEADER_PATTERN, inputText, re.MULTILINE)
         
-        corpus = resultNode.get_corpus()
-        rootNode.add_child(resultNode)
-        rootNode.append_corpus(corpus)
-                
-    return rootNode    
+    # Get all the indices of the headers
+    indices = [(match.start(), match.end()) for match in matches]
+    
+    # BASE CASE ===
+    # Check if it is only text (since there are no header indices)
+    if len(indices) == 0:
+        returnNode = Node(tag=inputText[0:10], data=inputText)
+        returnNode.update_bpointer(parent_id)
+        return [returnNode]
+    
+    # IS THERE TEXT BEFORE THE FIRST HEADER?
+    if indices[0][0] != 0:
+        textBefore = inputText[0:indices[0][0]]
+        returnNodes.append(Node(tag=textBefore[0:10], data=textBefore))
+    
+    # Get information on the starting header that will be searched from.
+    startHeader = indices[0]
+    startHeaderText = inputText[startHeader[0]:startHeader[1]]
+    startHeaderLevel = len(startHeaderText) - len(startHeaderText.replace("#", ""))
+    
+    # create the header node with the current header.
+    startHeaderNode = Node(tag=startHeaderText, data=startHeaderText)
+    returnNodes.append(startHeaderNode)
+    startHeaderNode.update_bpointer(parent_id)
+    
+    foundLower = False
+    for i in range(1, len(indices)):
+        currHeader = indices[i]
+        currHeaderText = inputText[currHeader[0]:currHeader[1]]
+        currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
+        
+        # CASE 1: If the current header level is greater than the starting header level then keep going.
+        if currHeaderLevel > startHeaderLevel:
+            continue
+    
+        # CASE 2: If the current header level is less than the starting header level then we need to create a new tree.
+        elif currHeaderLevel < startHeaderLevel:
+            foundLower = True
+            textBetween = inputText[startHeader[1]:currHeader[0]].strip()
+            
+            # Create the text nodes with the text between the headers
+            buildTree(textBetween, parent_id=startHeaderNode.identifier)
+            
+            # Start building with the next half of the text
+            
+    
+    if not foundLower:
+        textBetween = inputText[startHeader[1]:].strip()
+        if textBetween != '':
+            buildTree(textBetween, parent_id=startHeaderNode.identifier)
+        return returnNodes
+            
+    
 
-def find_backlinks(input_text:str) -> list:
+def findBacklinks(input_text:str) -> list:
     """ 
     Function to find all backlinks in a given text.
     """
@@ -46,7 +86,7 @@ def find_backlinks(input_text:str) -> list:
     backlinks = re.findall(pattern, input_text)
     return backlinks
 
-def find_tags(input_text:str) -> list:
+def findTags(input_text:str) -> list:
     """
     Function to find all tags in a given text.
     """
@@ -58,19 +98,19 @@ def find_tags(input_text:str) -> list:
     tags = re.findall(pattern, input_text)
     return tags
 
-def find_metadata(input_text:str):
+def findMetadata(input_text:str):
     post = frontmatter.loads(input_text)
     return post.metadata, post.content
 
-def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
+def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     """
     Converts markdown file to a MarkdownForest
     """
     
-    meta, cont = find_metadata(md)
+    meta, cont = findMetadata(md)
     
-    backlinks = find_backlinks(cont)
-    tags = find_tags(cont)
+    backlinks = findBacklinks(cont)
+    tags = findTags(cont)
     returnForest = MarkdownForest(name, metadata=meta)
     
     for backlink in backlinks:
@@ -78,13 +118,14 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     for tag in tags:
         returnForest.add_tag(tag)
     
-    html = markdown.markdown(cont)
-    toc =  BeautifulSoup(html, 'html.parser')
-    for tree in toc.branches:
-        root = generateRootNodeFromContents(tree)
-        returnForest.add_tree(MarkdownTree(root))
+    # Build the tree
+    tree = Tree()
+    tree.create_node(name, "root")
+    forestNodes = buildTree(cont, parent_id="root")
+    for node in forestNodes:
+        tree.add_node(node, parent="root")
     
-    return returnForest
+    return tree
 
 
 # ==================================================================================================
@@ -145,7 +186,7 @@ def parse_html_to_tree(html):
 
     return forest
 
-text = """
+test_text = """
 # A basic overview of Zettel and Zettelkasten
 
 The main idea behind any system based on atomic notes is that one should restrict ideas to single sheets of index card paper - thus collecting stacks of index cards containing important ideas. Atomizing ideas into small chunks simply makes them easier to remember. However, more importantly, it is easier to turn them into pieces that fit into a living body of information we refer to as a _Zettelkasten_. 
@@ -211,6 +252,11 @@ _This is one of several blog-post style pages that's not part of the [indexed no
 
 """
 
-toc =  TOC.fromMarkdown(text)
-print(toc.source)
-root = generateRootNodeFromContents(toc)
+basic_text = """
+# This is a title
+This is some text
+## This is a subtitle
+""".strip()
+
+tree = mdtreeify("basic", basic_text)
+print(tree)
