@@ -1,7 +1,14 @@
+"""_summary_
+
+"""
+
 from treelib import Tree
 
+# TODO: Add all the documentation and convert to snake case soon.
 
 class Node:
+    """_summary_
+    """
     
     def __init__(self):
         pass
@@ -11,6 +18,17 @@ class Node:
 
 
 class TextNode(Node):
+    """_summary_
+
+    Args:
+        Node (_type_): _description_
+
+    Raises:
+        IndexError: _description_
+
+    Returns:
+        _type_: _description_
+    """
     
     FRACTION_PRINTABLE = 0.25
     
@@ -33,6 +51,11 @@ class TextNode(Node):
         return self.text
 
 class HeaderNode(Node):
+    """_summary_
+
+    Args:
+        Node (_type_): _description_
+    """
     
     def __init__(self, header:str, headerNumber:int, parentID):
         self.parentID = parentID
@@ -63,22 +86,13 @@ class MarkdownForest:
     def __init__(self, root:Tree, documentName:str="[document]", metadata:dict=None):
         self.documentName = documentName
         self.metadata = metadata
-        self.root = root 
-        self.treeCount = 0
+        self.root = root
+        self.treeCount = len(root.children('root'))
         self.backlinks = []
         self.tags = []
         
     def __str__(self):
         return str(self.root)
-    
-    def __getitem__(self, index:int):
-        if index < 0 or index >= self.treeCount:
-            raise IndexError("Index out of bounds")
-        return self.trees[index]
-    
-    def __iter__(self):
-        for tree in self.trees:
-            yield tree
     
     def __len__(self):
         return self.treeCount
