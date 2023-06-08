@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup
-from .mdforest import *
-from .tree.types import *
+from .mdforest import mdtreeify, findMetadata
+from .tree.types import MarkdownForest
+import re
 
-def treeify(name:str="[document]", md:str="", *args, **kwargs) -> MarkdownForest:
+def treeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """Converts a markdown document into a MarkdownForest object.
 
     Args:
-        name (str, optional): Name of the document. Defaults to "[document]".
-        md (str, optional): Contents of the document. Defaults to "".
+        name (str, optional): Name of the document.
+        md (str, optional): Contents of the document.
 
     Returns:
         MarkdownForest: A forest representation of the markdown document.
@@ -15,17 +16,17 @@ def treeify(name:str="[document]", md:str="", *args, **kwargs) -> MarkdownForest
     
     return mdtreeify(name, md, *args, **kwargs)
 
-def markdownify(tree:MarkdownForest, *args, **kwargs) -> str:
-    """_summary_
+# def markdownify(tree:MarkdownForest, *args, **kwargs) -> str:
+#     """_summary_
 
-    Args:
-        tree (MarkdownForest): _description_
+#     Args:
+#         tree (MarkdownForest): _description_
 
-    Returns:
-        str: _description_
-    """
+#     Returns:
+#         str: _description_
+#     """
     
-    return mdtextify(tree, *args, **kwargs)
+#     return mdtextify(tree, *args, **kwargs)
 
 def clean_markdown(md:str) -> str:
     """
@@ -33,7 +34,7 @@ def clean_markdown(md:str) -> str:
     """
         
     # Remove the metadata
-    _, markdown_text = find_metadata(md)
+    _, markdown_text = findMetadata(md)
     
      # Create a BeautifulSoup object with the input markdown text
     soup = BeautifulSoup(markdown_text, 'html.parser')
