@@ -9,13 +9,6 @@ def generate_forest(path_to_md_file:str):
     # Create a forest from the Markdown text
     forest = mdforest.treeify(name_of_file, markdown_text)
     print(forest)
-    print("THE NUMBER OF TREES ARE", forest.treeCount)
-    root = forest[0].root
-    for branches in root.children:
-        if isinstance(branches, mdforest.tree.HeaderNode):
-            print(branches)
-        elif isinstance(branches, mdforest.tree.TextNode):
-            print(repr(branches))
     
     
 # Iterate over all markdown files in the current directory

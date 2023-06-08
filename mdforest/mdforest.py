@@ -1,13 +1,18 @@
-import frontmatter 
+""" This file contains the main functions for the mdforest package.
+"""
+    
 import re
-from bs4 import BeautifulSoup
-from markdown import markdown
-from tree.types import *
-from treelib import Tree, Node
+
+import frontmatter
+from treelib import Tree
+
+from .tree.types import MarkdownForest, TextNode, Node
 
 # ==================================================================================================
 #                                           TREEIFY
 # ==================================================================================================
+
+# TODO: Rename to snake_case in the future.
 
 def buildTree(inputText:str, tree:Tree, root_id) :
     """ Function to build the provides tree varaible from the inputText. 
@@ -161,11 +166,11 @@ def convertRootToText(rootNode: Node) -> str:
     # For the header node
     headerLevel = rootNode.get_header_level()
     returnString = '#'*headerLevel + " " + str(rootNode) + "\n"
-    for i, child in enumerate(rootNode):
+    for _, child in enumerate(rootNode):
         returnString += convertRootToText(child)
     
     return returnString    
-        
+     
 def convertDictToMetadata(metadata:dict) -> str:
     yaml = "---\n"
     for key, value in metadata.items():
@@ -186,6 +191,11 @@ def convertDictToMetadata(metadata:dict) -> str:
 #         finalText += convertRootToText(tree.get_root())
 #     return finalText
 
+
+
+
+
+# TODO: Delete these at a later time.
 # test_text = """
 # # A basic overview of _Zettel_ and _Zettelkasten_
 
