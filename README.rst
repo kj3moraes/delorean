@@ -1,3 +1,6 @@
+.. image:: media/forest-icon.png
+   :width: 100
+
 mdforest - Markdown Forest
 ==========================
 
