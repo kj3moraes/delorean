@@ -3,14 +3,13 @@ import re
 from bs4 import BeautifulSoup
 from markdown import markdown
 from tree.types import *
-from treebuild import TOC
 from treelib import Tree, Node
 
 # ==================================================================================================
 #                                           TREEIFY
 # ==================================================================================================
 
-def buildTree(inputText:str, parent_id) -> list:
+def buildTree(inputText:str, tree:Tree, root_id) :
     
     assert isinstance(inputText, str), "inputText must be a string"
     # assert inputText != "", "inputText cannot be an empty string"
@@ -18,60 +17,93 @@ def buildTree(inputText:str, parent_id) -> list:
         return []
 
     HEADER_PATTERN = r'^#+\s+(.*)$'
-    returnNodes = []
     
     matches = re.finditer(HEADER_PATTERN, inputText, re.MULTILINE)
         
     # Get all the indices of the headers
     indices = [(match.start(), match.end()) for match in matches]
+    # indices.sort(key=lambda x: x[0])
     
     # BASE CASE ===
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
-        returnNode = Node(tag=inputText[0:10], data=inputText)
-        returnNode.predecessor = parent_id
-        return [returnNode]
+        # returnNode = Node(tag=inputText[0:10], data=inputText)
+        # returnNode.predecessor = root_id
+        tree.create_node(inputText, inputText, parent=root_id)
+        return
     
     # IS THERE TEXT BEFORE THE FIRST HEADER?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        textNode = Node(tag=textBefore[0:10], data=textBefore)
-        textNode.predecessor = parent_id
-        returnNodes.append(textNode)
+        # textNode = Node(tag=textBefore[0:10], data=textBefore)
+        # textNode.predecessor = root_id
+        tree.create_node(textBefore, textBefore, parent=root_id)
     
     # FIXME: USE THE STACK STRUCTURE THAT JAIMIL SAID TO USE
-    # # Get information on the starting header that will be searched from.
-    # startHeader = indices[0]
-    # startHeaderText = inputText[startHeader[0]:startHeader[1]]
-    # startHeaderLevel = len(startHeaderText) - len(startHeaderText.replace("#", ""))
     
-    # # create the header node with the current header.
-    # startHeaderNode = Node(tag=startHeaderText, data=startHeaderText)
-    # startHeaderNode.predecessor = parent_id
-    # returnNodes.append(startHeaderNode)
-    # startHeaderNode.predecessor = parent_id
+    stack = []
     
-    # foundLower = False
-    # for i in range(1, len(indices)):
-    #     currHeader = indices[i]
-    #     currHeaderText = inputText[currHeader[0]:currHeader[1]]
-    #     currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
-        
-    #     # CASE 1: If the current header level is greater than the starting header level then keep going.
-    #     if currHeaderLevel > startHeaderLevel:
-    #         continue
+    # Get information on the starting header that will be searched from.
+    currHeader = indices[0]
+    currHeaderText = inputText[currHeader[0]:currHeader[1]]
+    currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
     
-    #     # CASE 2: If the current header level is less than the starting header level then we need to create a new tree.
-    #     elif currHeaderLevel < startHeaderLevel:
-    #         foundLower = True
-    #         textBetween = inputText[startHeader[1]:currHeader[0]].strip()
+    # Create the header node with the current header.
+    node = tree.create_node(currHeaderText, parent=root_id)
+    # currHeaderNode = Node(tag=currHeaderText, data=(currHeaderText, currHeader, currHeaderLevel))
+    # currHeaderNode.predecessor = root_id
+    
+    # Add the node to the stack
+    stack.append((currHeaderLevel, currHeader, node.identifier))
+
+    for i in range(1, len(indices)):
+        currHeader = indices[i]
+        currHeaderText = inputText[currHeader[0]:currHeader[1]]
+        currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
+        # currHeaderNode = Node(tag=currHeaderText, data=(currHeaderText, currHeader, currHeaderLevel))
+        lastHeader = stack[-1]
+        # CASE 1: If the current header level is greater than the starting header level then keep going.
+        if currHeaderLevel > lastHeader[0]:
+            # Extract the text between the current header and the previous header
+            textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
+            if textBetween != "":
+                tree.create_node(tag=textBetween[0:min(10, len(textBetween))], data=textBetween, parent=lastHeader[-1])
+            # Node(tag=textBetween[0:10], data=textBetween)
+            # textNode.predecessor = stack[-1].identifier
+            # stack[-1].update_successors(textNode.identifier)
             
-    #         # Create the text nodes with the text between the headers
-    #         buildTree(textBetween, parent_id=startHeaderNode.identifier)
+            # Add the current header as a node to the stack and its parent is the previous header
+            # currHeaderNode.predecessor = stack[-1].identifier
+            # stack[-1].update_successors(currHeaderNode.identifier)
+            node = tree.create_node(tag=currHeaderText, parent=lastHeader[-1])
+            stack.append((currHeaderLevel, currHeader, node.identifier))
             
-    #         # Start building with the next half of the text
+        # CASE 2: If the current header level is less than or equal to the starting header level then we need to create a new tree.
+        elif currHeaderLevel <= lastHeader[0]:
+            textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
+            if textBetween != "":
+                tree.create_node(tag=textBetween[0:min(10, len(textBetween))], data=textBetween, parent=lastHeader[-1])
             
+            # Pop off until you get to the node with a lower level than the current header level
+            while len(stack) > 0: 
+                if stack[-1][0] >= currHeaderLevel:
+                    stack.pop()
+                else:
+                    break
+            
+            if len(stack) == 0:
+                node = tree.create_node(currHeaderText, parent=root_id)
+            else:
+                node = tree.create_node(currHeaderText, parent=stack[-1][-1])
+            stack.append((currHeaderLevel, currHeader, node.identifier))
+                
+                
+    # Check if there is any text after the last header
+    if indices[-1][1] != len(inputText):
+        textEnd = inputText[indices[-1][1]:].strip()
+        tree.create_node(tag=textEnd[:min(10, len(textEnd))], data=textEnd, parent=stack[-1][-1])
     
+
     # if not foundLower:
     #     textBetween = inputText[startHeader[1]:].strip()
     #     buildTree(textBetween, parent_id=startHeaderNode.identifier)
@@ -116,21 +148,17 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     
     backlinks = findBacklinks(cont)
     tags = findTags(cont)
-    returnForest = MarkdownForest(name, metadata=meta)
+    tree = Tree()
+    tree.create_node(name, "root")
+    buildTree(cont, tree, "root")
+    returnForest = MarkdownForest(tree, name, metadata=meta)
     
     for backlink in backlinks:
         returnForest.add_backlink(backlink)
     for tag in tags:
         returnForest.add_tag(tag)
-    
-    # Build the tree
-    tree = Tree()
-    tree.create_node(name, "root")
-    forestNodes = buildTree(cont, parent_id="root")
-    for node in forestNodes:
-        tree.add_node(node, parent="root")
-    
-    return tree
+
+    return returnForest
 
 
 # ==================================================================================================
@@ -164,12 +192,12 @@ def convertDictToMetadata(metadata:dict) -> str:
     yaml += "---\n"
     return yaml
 
-def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
+# def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
     
-    finalText = convertDictToMetadata(forest.metadata)
-    for i, tree in enumerate(forest):
-        finalText += convertRootToText(tree.get_root())
-    return finalText
+#     finalText = convertDictToMetadata(forest.metadata)
+#     for i, tree in enumerate(forest):
+#         finalText += convertRootToText(tree.get_root())
+#     return finalText
 
 def parse_html_to_tree(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -192,7 +220,7 @@ def parse_html_to_tree(html):
     return forest
 
 test_text = """
-# A basic overview of Zettel and Zettelkasten
+# A basic overview of _Zettel_ and _Zettelkasten_
 
 The main idea behind any system based on atomic notes is that one should restrict ideas to single sheets of index card paper - thus collecting stacks of index cards containing important ideas. Atomizing ideas into small chunks simply makes them easier to remember. However, more importantly, it is easier to turn them into pieces that fit into a living body of information we refer to as a _Zettelkasten_. 
 
@@ -229,26 +257,6 @@ The extent to which folders may be overly rigid is circumvented by the fact that
 
 Tags provide yet another layer of metadata beyond links to other pages and links to indices to include on each page. Tags are a way to provide "loose" links between pages by defining overarching categories that may be either more specific or more general than the categorizations defined by [indices.](Knowledge%20Management.md#The%20role%20of%20indices) For example, I might not want every differential equation to link back to the page that gives the general concept of differential equations or to every other differential equation. However, I may want some link to a tag that also can be found under other differential equations in order to reveal a broad commonality. Tags are also a simple way to express how some pages fall under more than one category. e.g. I'd consider some of my pages to be purely mathematical while also being topics in physics. Thus something may be tagged as being both in common with pages that are categorized in a subfolder of quantum mechanics and a subfolder of my mathematical foundations pages. I'm also particularly fond of nested tags that allow me to condense the information given by the tags into fewer tags that are easier to keep track of despite their unruly lengths. 
 
-### Inheritance 
-
-A basic concept in object oriented programming is _inheritance._ This describes the way _classes_ inherit  properties of other classes - where instances of classes are _objects_ that in a sense are parts of a machine that you materialize from your _library of classes_ when you run a piece of computer code. A good programmer who's building a _library of classes_ that they use in a project should structure their library so that any class that shares properties with another class _inherits_ those properties automatically from that class or a class that describes a more general object rather than having those properties repeatedly redefined in what could end up being a slightly different ways that add confusion or inconsistencies to the structure of the class library. This leads to an emergent structure within a class library called a _class hierarchy._
-
-I see some parallels between this site and a class library. As I've expanded this site I've become more aware of the ways in which more specialized notes inherit aspects of more generalized notes - in order to reflect this I've, over time, become more careful about never repeating information and using block references to other notes as a much as I can in order reflect inheritance. This is one way in which I'm able to filter out what's actually the important point to learn from a particular note, rather than letting myself get bogged down in the details that surround it. What I find particularly compelling is how I may be able to use this approach structure worked examples of solutions to specific [physics problems](Thoughts%20on%20What%20this%20Site%20is.md#The%20importance%20of%20seeing%20underlying%20mechanisms). For example, I may be describing the model for a _quantum harmonic oscillator_. In doing so, I'm forced to reference concepts like _Hamiltonian_ or the _classical harmonic oscillator._ In trying to define what exactly a quantum harmonic oscillator is, I find that it _inherits_ some basic properties from classical oscillators, which I may then invoke in a more specific quantum mechanical problem (such as a particle trapped in a particular potential) via a reference to only the quantum oscillator. In solving more complicated problems I may invoke, often using [block references](The%20Quantum%20Well%20Style%20Guide.md#Block%20references), many different notes that, if this were a coding project, would form a class sub-library that I draw from for specific applications. This makes me more aware of exactly what tools I need for every problem and provides me with a new found clarity in my problem solving approach. 
-
-### Detailed style guide I follow
-
-While this page describes my general paradigm and some practices, I aim to create an even more detailed style guide [here.](The%20Quantum%20Well%20Style%20Guide.md)
-
-## Reasons I was drawn to _Zettelkasten_
-
-When approaching a complicated topic, information is typically presented in the form of a wall of text - a wall full of connective statements and references to other bits of information that were previously mentioned or the reader is expected to know already. It should come as no surprise that in highly technical fields, such as quantum optics, or mathematical analysis, one's expected to just know a lot of things already before picking up the more useful textbooks out there. And the farther one gets into a topic, the more one relies on knowledge drawn from multiple sources. In order to relate topics to prerequisite knowledge as well as quickly expand on particular topics, I found a networked approach provided by the _Zettelkasten_ method to be easiest to organize. This becomes so much easier using software - no need to actually physically move cards around or worry about indexing them with a numbering system, as would be done in a physical _Zettelkasten_.
-
-### Parallels to animal brains
-
-The exact ways memory is stored in a brain is beyond the scope of this text - however I can say with confidence that I know that brains are also networked structures, and as I have a brain, I'm painfully aware that I don't have a filing cabinet in my head or stacks of textbooks I can reference specific pages of in order to extract the exact concept or formula I need at any given point. Rather, it would appear that our thoughts and memories are a matrix of fleeting ideas triggered by associations and that with each instantiation, we alter a memory slightly. The seemingly disordered way in which information actually seems to connect to other bits of information in our minds and possibly outside of our minds becomes apparent when I map out the [connectome](Welcome%20to%20The%20Quantum%20Well!.md#The%20Graph%20View) of all the items on this site. Roughly speaking, under this paradigm, every physics or math problem is a _node_ and every step towards a solution is a _connection._
-
-By restricting myself to atomic notes and focusing on associations between ideas, my note taking strategy and the way I want to experiment in presenting information structures a systematized referenced library around the constraints of our animal brains. 
-
 ---
 
 _This is one of several blog-post style pages that's not part of the [indexed notes](Welcome%20to%20The%20Quantum%20Well!.md#Indices) that constitute what I consider to be the core content to this site._ 
@@ -259,9 +267,8 @@ _This is one of several blog-post style pages that's not part of the [indexed no
 
 basic_text = """
 # This is a title
-This is some text
-## This is a subtitle
+asdasd
 """.strip()
 
-tree = mdtreeify("basic", basic_text)
+tree = mdtreeify("testing", test_text)
 print(tree)
