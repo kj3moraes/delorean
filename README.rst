@@ -1,10 +1,10 @@
 .. image:: media/forest-icon.png
    :width: 100
 
-mdforest - Markdown Forest
+delorean
 ==========================
 
-A library to convert Markdown documents into tree data structures and
+A library to convert markup documents into tree data structures and
 vice versa. There is greater functionality available to modify, prune,
 add and delete parts of documents when there are in the MarkdownTree
 structure.
@@ -28,8 +28,8 @@ You can find the library page here `here <nil>`__
 Quick Usage Guide
 -----------------
 
-Markdown2Python offers only one function ``md2py``, which generates a
-Python object from markdown text. This object is a navigable, “Tree of
+delorean offers only one function ``treeify``, which generates a
+Python object from markup text. This object is a navigable, “Tree of
 Contents” abstraction for the markdown file.
 
 Take, for example, the following markdown file.

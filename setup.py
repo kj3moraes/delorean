@@ -5,8 +5,8 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 LONG_DESCRIPTION = (this_directory / "README.rst").read_text()
 
-VERSION = '2.0.0'
-DESCRIPTION = 'A package to convert between Markdown and a forest data structure for efficient processing.'
+VERSION = '0.1.0'
+DESCRIPTION = 'A package to convert between markup language documents and a forest data structure for efficient processing.'
 
 setup(
     name = "delorean",
