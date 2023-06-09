@@ -36,37 +36,34 @@ def buildTree(inputText:str, tree:Tree, root_id) :
     # Get all the indices of the headers
     indices = [(match.start(), match.end()) for match in matches]
     
-    # BASE CASE ===
+    # BASE CASE
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
-        tree.create_node(inputText, inputText, parent=root_id)
+        tree.create_node(tag=inputText[0:min(10, len(inputText))],
+                         data=TextNode(inputText),
+                         parent=root_id)
         return
     
-    # IS THERE TEXT BEFORE THE FIRST HEADER?
+    # Is there text before the first header?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        tree.create_node(textBefore, textBefore, parent=root_id)
+        tree.create_node(tag=textBefore[0:min(10, len(textBefore))],
+                        data=TextNode(textBefore),
+                        parent=root_id)
 
     stack = []
-    
-    # Get information on the starting header that will be searched from.
-    # currHeader = indices[0]
-    # currHeaderText = inputText[currHeader[0]:currHeader[1]]
-    # currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
-    
-    # # Create the header node with the current header.
-    # node = tree.create_node(currHeaderText, parent=root_id)
-
-    # # Add the node to the stack
-    # stack.append((currHeaderLevel, currHeader, node.identifier))
 
     for currHeader in indices:
    
         currHeaderText = inputText[currHeader[0]:currHeader[1]]
         currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
+        
+        # If this is the first header then create the root node automatically.
         if len(stack) == 0:
              # Create the header node with the current header.
-            node = tree.create_node(currHeaderText, parent=root_id)
+            node = tree.create_node(tag=currHeaderText,
+                                    data=HeaderNode(currHeaderText, currHeaderLevel, root_id),
+                                    parent=root_id)
 
             # Add the node to the stack
             stack.append((currHeaderLevel, currHeader, node.identifier))
