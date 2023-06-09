@@ -1,5 +1,5 @@
-.. image:: media/forest-icon.png
-   :width: 100
+.. image:: media/image.png
+   :width: 200
 
 delorean
 ==========================
@@ -9,10 +9,7 @@ vice versa. There is greater functionality available to modify, prune,
 add and delete parts of documents when there are in the MarkdownTree
 structure.
 
-markdown-tree is a fork of `md2py <https://github.com/alvinwan/md2py>`__
-which is no longer maintained. This library adds far more functionality
-and broadens the scope of the older libary. The full list of features
-can be found under `Features <##%20Features>`__
+The full list of features can be found under `Features <##%20Features>`__
 
 Install
 -------
@@ -100,6 +97,5 @@ Some of the features of this library are:
 License
 -------
 
-The `original project <https://github.com/alvinwan/md2py>`__ was
-licensed under the Apache 2.0 License and a copy is provided in this
-repo as well. All the files changed are listed in the CHANGELOG.
+This project is licensed under the Apache 2.0 License. A copy of the license 
+can be found in the LICENSE file.
