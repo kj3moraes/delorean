@@ -49,6 +49,10 @@ class TextNode(Node):
     @property
     def text(self):
         return self.text
+    
+    @text.setter
+    def text(self, text:str):
+        self._text = text
 
 class HeaderNode(Node):
     """_summary_
@@ -68,17 +72,20 @@ class HeaderNode(Node):
     
     def __repr__(self):
         return f"(h{self.headerNumber}) {self.header}"
-        
-    @property
-    def corpus(self) -> str:
-        return "\n".join(self.corpus)
     
-    def append_corpus(self, corpus:str) -> None:
-        self.corpus += corpus
-        
     @property
     def headerLevel(self) -> int:
         return self.headerNumber
+    
+    @headerLevel.setter
+    def headerLevel(self, headerNumber:int) -> None:
+        self._headerNumber = headerNumber
+        
+    def get_corpus(self) -> list:
+        return self.corpus
+    
+    def add_to_corpus(self, text:str) -> None:
+        self.corpus.append(text)
 
 
 class MarkdownForest:
