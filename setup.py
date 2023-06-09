@@ -9,18 +9,18 @@ VERSION = '2.0.0'
 DESCRIPTION = 'A package to convert between Markdown and a forest data structure for efficient processing.'
 
 setup(
-    name = "mdforest",
+    name = "delorean",
     version = VERSION,
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
     description = DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     license = "Apache 2.0",
-    url = "http://github.com/kj3moraes/mdforest",
-    packages = ['mdforest', 'mdforest.tree'],
+    url = "http://github.com/kj3moraes/delorean",
+    packages = ['delorean', 'delorean.tree'],
     tests_require = ['unittest'],
     install_requires = ['markdown', 'beautifulsoup4', 'python-frontmatter'],
-    download_url = 'https://github.com/kj3moraes/mdforest/archive/%s.zip' % VERSION,
+    download_url = 'https://github.com/kj3moraes/delorean/archive/%s.zip' % VERSION,
     classifiers = [
         "Topic :: Utilities",
     ],

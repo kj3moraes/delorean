@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from .mdforest import mdtreeify, findMetadata
+from .delorean import mdtreeify, findMetadata
 from .tree.types import MarkdownForest
 import re
 

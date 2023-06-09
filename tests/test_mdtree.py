@@ -1,5 +1,5 @@
 
-from mdforest import *
+from delorean import *
 import unittest
 
 ORDERED_HIERARCHY = open("tests/docs/test_ordered.md", "r").read()
