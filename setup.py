@@ -17,7 +17,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/delorean",
-    packages = ['delorean', 'delorean.tree'],
+    packages = ['delorean', 'delorean.tree', 'delorean.parser'],
     tests_require = ['unittest'],
     install_requires = ['markdown', 'beautifulsoup4', 'python-frontmatter'],
     download_url = 'https://github.com/kj3moraes/delorean/archive/%s.zip' % VERSION,
