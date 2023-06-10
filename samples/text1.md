@@ -35,6 +35,8 @@ There is a fifth force which shaped religious belief, but its effect is so unive
 ## Appendix III: Report on Bene Gesserit Motives and Purposes.
 This appendix details a “report on Bene Gesserit motives and purpose.”
 The narrator introduces it by noting that Lady Jessica commissioned the report directly after the “Arrakis Affair.” 
+
+### Narratives
 The document is noted as being extremely honest in tone.
 
 ## Appendix IV: The Almanak eb-Ashraf (Selected Excerpts of the Noble Houses)
