@@ -53,7 +53,7 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     
     backlinks = findBacklinks(cont)
     tags = findTags(cont)
-    parser = GFMParser(name, cont)
+    parser = MarkdownParser(name, cont)
     tree = parser.parse()
     returnForest = MarkdownForest(tree, name, metadata=meta)
     

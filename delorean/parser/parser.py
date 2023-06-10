@@ -11,7 +11,7 @@ class Parser:
         pass
     
     
-class GFMParser(Parser):
+class MarkdownParser(Parser):
     
     def __init__(self, document_name:str, text:str):
         super().__init__(document_name, text)
@@ -22,16 +22,6 @@ class GFMParser(Parser):
         tree = buildTree(self.text, self.document_name, header_pattern=HEADER_PATTERN)
         return tree
         
-    
-
-class CommonMarkParser(Parser):
-    
-    def __init__(self, document_name:str, text:str):
-        super().__init__(document_name, text)
-        
-    def parse(self) -> Tree:
-        pass
-    
 
 class RestructuredParser(Parser):
     
@@ -39,4 +29,8 @@ class RestructuredParser(Parser):
         super().__init__(document_name, text)
         
     def parse(self) -> Tree:
-        pass
+        HEADER_PATTERN = r'^(\S.*)\n[=~`\'^"-]+$'
+        
+        tree = buildTree(self.text, self.document_name, header_pattern=HEADER_PATTERN)
+        return tree
+        

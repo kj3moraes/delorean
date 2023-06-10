@@ -1,6 +1,6 @@
 import re
 from treelib import Tree
-from delorean.tree import TextNode, HeaderNode, MarkdownForest
+from delorean.tree import TextNode, HeaderNode
 
 
 def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
@@ -8,19 +8,18 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
     Works for Github Flavored Markdown (GFM). 
 
     Args:
-        inputText (str): Input GFM text
-        tree (Tree): treelib Tree object with root node
-        root_id (_type_): id of the root node
-
+        inputText (str): Input text to be parsed
+        name (Str): Name of the document
+        
     """
     assert isinstance(inputText, str), "inputText must be a string"
-    # assert inputText != "", "inputText cannot be an empty string"
     if inputText == "":
         return None
     
     tree = Tree()
     root_id = tree.create_node(tag=name, identifier="root").identifier
 
+    # Default to the GFM header pattern
     HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"
     
     matches = re.finditer(HEADER_PATTERN, inputText, re.MULTILINE)
@@ -99,6 +98,7 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
                     break
             
             if len(stack) == 0:
+                
                 node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, root_id), parent=root_id)
             else:
                 node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, stack[-1][-1]), parent=stack[-1][-1])

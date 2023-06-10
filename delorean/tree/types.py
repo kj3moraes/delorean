@@ -48,7 +48,7 @@ class TextNode(Node):
     
     @property
     def text(self):
-        return self.text
+        return self._text
     
     @text.setter
     def text(self, text:str):
