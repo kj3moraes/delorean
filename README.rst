@@ -18,7 +18,7 @@ Install via pip
 
 .. code:: bash
 
-   pip install markdown-tree
+   pip install pydelorean
 
 You can find the library page here `here <nil>`__
 
