@@ -26,8 +26,7 @@ Quick Usage Guide
 -----------------
 
 delorean offers only one function ``treeify``, which generates a
-Python object from markup text. This object is a navigable, “Tree of
-Contents” abstraction for the markdown file.
+Python object from markup text. The object is a [treelib](https://github.com/caesar0301/treelib) Tree structure.
 
 Take, for example, the following markdown file.
 
@@ -60,11 +59,6 @@ Take, for example, the following markdown file.
    1. squawk
    2. plop
    3. repeat, unless ordered to squat
-
-Akin to a navigation bar, the ``TreeOfContents`` object allows you to
-expand a markdown file one level at a time. Running ``md2py`` on the
-above markdown file will generate a tree, abstracting the below
-structure.
 
 .. code:: text
 
