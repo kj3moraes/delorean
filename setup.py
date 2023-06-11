@@ -9,7 +9,7 @@ VERSION = '0.1.0'
 DESCRIPTION = 'A package to convert between markup language documents and a forest data structure for efficient processing.'
 
 setup(
-    name = "delorean",
+    name = "pydelorean",
     version = VERSION,
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
@@ -17,7 +17,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/delorean",
-    packages = ['delorean', 'delorean.tree', 'delorean.parser'],
+    packages = ['pydelorean', 'pydelorean.tree', 'pydelorean.parser'],
     tests_require = ['unittest'],
     install_requires = ['markdown', 'beautifulsoup4', 'python-frontmatter'],
     download_url = 'https://github.com/kj3moraes/delorean/archive/%s.zip' % VERSION,

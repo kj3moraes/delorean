@@ -1,6 +1,6 @@
 import re
 from treelib import Tree
-from delorean.tree import TextNode, HeaderNode
+from pydelorean.tree import TextNode, HeaderNode
 
 
 def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
