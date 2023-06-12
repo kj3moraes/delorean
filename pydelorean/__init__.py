@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from .delorean import mdtreeify, findMetadata
 from .tree.types import MarkdownForest
+from .utils import FileType
 import re
 
 def treeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:

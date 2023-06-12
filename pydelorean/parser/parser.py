@@ -34,3 +34,21 @@ class RestructuredParser(Parser):
         tree = buildTree(self.text, self.document_name, header_pattern=HEADER_PATTERN)
         return tree
         
+
+class TextParser(Parser):
+    
+    def __init__(self, document_name:str, text:str):
+        super().__init__(document_name, text)
+        
+    def parse(self) -> Tree:
+        pass
+
+
+class YAMLParser(Parser):
+    
+    def __init__(self, document_name:str, text:str):
+        super().__init__(document_name, text)
+        
+    def parse(self) -> Tree:
+        pass
+        
