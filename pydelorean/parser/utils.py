@@ -1,35 +1,26 @@
-""" This file contains the main functions for the mdforest package.
-"""
-    
 import re
-
-import frontmatter
 from treelib import Tree
+from pydelorean.tree import TextNode, HeaderNode
 
-from .tree.types import MarkdownForest, TextNode, HeaderNode, Node
 
-# ==================================================================================================
-#                                           TREEIFY
-# ==================================================================================================
-
-# TODO: Rename to snake_case in the future.
-
-def buildTree(inputText:str, tree:Tree, root_id) :
+def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
     """ Function to build the provides tree varaible from the inputText. 
     Works for Github Flavored Markdown (GFM). 
 
     Args:
-        inputText (str): Input GFM text
-        tree (Tree): treelib Tree object with root node
-        root_id (_type_): id of the root node
-
+        inputText (str): Input text to be parsed
+        name (Str): Name of the document
+        
     """
     assert isinstance(inputText, str), "inputText must be a string"
-    # assert inputText != "", "inputText cannot be an empty string"
     if inputText == "":
-        return []
+        return None
+    
+    tree = Tree()
+    root_id = tree.create_node(tag=name, identifier="root").identifier
 
-    HEADER_PATTERN = r'^#+\s+(.*)$'
+    # Default to the GFM header pattern
+    HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"
     
     matches = re.finditer(HEADER_PATTERN, inputText, re.MULTILINE)
         
@@ -42,7 +33,7 @@ def buildTree(inputText:str, tree:Tree, root_id) :
         tree.create_node(tag=inputText[0:min(10, len(inputText))],
                          data=TextNode(inputText),
                          parent=root_id)
-        return
+        return tree
     
     # Is there text before the first header?
     if indices[0][0] != 0:
@@ -51,8 +42,10 @@ def buildTree(inputText:str, tree:Tree, root_id) :
                         data=TextNode(textBefore),
                         parent=root_id)
 
+    # Use a stack to keep track of the header levels.
     stack = []
 
+    # Iterate over all the headers and accordingly build the tree.
     for currHeader in indices:
    
         currHeaderText = inputText[currHeader[0]:currHeader[1]]
@@ -105,6 +98,7 @@ def buildTree(inputText:str, tree:Tree, root_id) :
                     break
             
             if len(stack) == 0:
+                
                 node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, root_id), parent=root_id)
             else:
                 node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, stack[-1][-1]), parent=stack[-1][-1])
@@ -115,92 +109,5 @@ def buildTree(inputText:str, tree:Tree, root_id) :
     if indices[-1][1] != len(inputText):
         textEnd = inputText[indices[-1][1]:].strip()
         tree.create_node(tag=textEnd[:min(10, len(textEnd))], data=TextNode(textEnd), parent=stack[-1][-1])
-
-
-def findBacklinks(input_text:str) -> list:
-    """ 
-    Function to find all backlinks in a given text.
-    """
-    
-    backlinks = []
-
-    # Regular expression pattern to match backlinks
-    pattern = r'\[\[(.*?)\]\]'
-    backlinks = re.findall(pattern, input_text)
-    return backlinks
-
-def findTags(input_text:str) -> list:
-    """
-    Function to find all tags in a given text.
-    """
-    
-    tags = []
-
-    # Regular expression pattern to match backlinks
-    pattern = r'#([a-zA-Z0-9_]+)'
-    tags = re.findall(pattern, input_text)
-    return tags
-
-def findMetadata(input_text:str):
-    post = frontmatter.loads(input_text)
-    return post.metadata, post.content
-
-def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
-    """
-    Converts markdown file to a MarkdownForest
-    """
-    
-    meta, cont = findMetadata(md)
-    
-    backlinks = findBacklinks(cont)
-    tags = findTags(cont)
-    tree = Tree()
-    tree.create_node(name, "root")
-    buildTree(cont, tree, "root")
-    returnForest = MarkdownForest(tree, name, metadata=meta)
-    
-    for backlink in backlinks:
-        returnForest.add_backlink(backlink)
-    for tag in tags:
-        returnForest.add_tag(tag)
-
-    return returnForest
-
-
-# ==================================================================================================
-#                                           TEXTIFY
-# ==================================================================================================
-
-def convertRootToText(rootNode: Node) -> str:
-    
-    # BASE CASE: We just have text node.
-    if isinstance(rootNode, TextNode):
-        return repr(rootNode) + "\n"
-    
-    # For the header node
-    headerLevel = rootNode.get_header_level()
-    returnString = '#'*headerLevel + " " + str(rootNode) + "\n"
-    for _, child in enumerate(rootNode):
-        returnString += convertRootToText(child)
-    
-    return returnString    
-     
-def convertDictToMetadata(metadata:dict) -> str:
-    yaml = "---\n"
-    for key, value in metadata.items():
-        if isinstance(value, list):
-            yaml += f"{key}: \n"
-            for elem in value:
-                yaml += f"  - {elem}\n"
-            continue
-        yaml += f"{key}: {value}\n"
-    yaml += "---\n"
-    return yaml
-
-# FIXME: Change the mdtextify implenmentation to use the new tree structure.
-# def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
-    
-#     finalText = convertDictToMetadata(forest.metadata)
-#     for i, tree in enumerate(forest):
-#         finalText += convertRootToText(tree.get_root())
-#     return finalText
+        
+    return tree
