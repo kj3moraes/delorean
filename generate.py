@@ -45,6 +45,6 @@ def generate_forest(path_to_md_file:str):
     
     
 # Iterate over all markdown files in the current directory
-generate_forest("./samples/text1.md")
+generate_forest("./samples/empty.md")
         
 

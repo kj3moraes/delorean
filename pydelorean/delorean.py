@@ -54,22 +54,28 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     backlinks = findBacklinks(cont)
     tags = findTags(cont)
     
-    # Based on the file type specified by the user, choose a parser
-    if 'type' in kwargs:
-        if kwargs['type'] == FileType.MARKDOWN:
-            parser = MarkdownParser(name, cont)
-        elif kwargs['type'] == FileType.RESTRUCTUREDTEXT:
-            parser = RestructuredParser(name, cont)
-        elif kwargs['type'] == FileType.TXT:
-            parser = TextParser(name, cont)
-        elif kwargs['type'] == FileType.YAML:
-            parser = YAMLParser(name, cont)
-        else:
-            raise ValueError("Invalid file type.")
+    if cont == "":
+        # If the file is empty, just create a root node
+        tree = Tree()
+        tree.create_node(tag=name, identifier="root").identifier
     else:
-        parser = MarkdownParser(name, cont)
-        
-    tree = parser.parse()
+        # Based on the file type specified by the user, choose a parser
+        if 'type' in kwargs:
+            if kwargs['type'] == FileType.MARKDOWN:
+                parser = MarkdownParser(name, cont)
+            elif kwargs['type'] == FileType.RESTRUCTUREDTEXT:
+                parser = RestructuredParser(name, cont)
+            elif kwargs['type'] == FileType.TXT:
+                parser = TextParser(name, cont)
+            elif kwargs['type'] == FileType.YAML:
+                parser = YAMLParser(name, cont)
+            else:
+                raise ValueError("Invalid file type.")
+        else:
+            parser = MarkdownParser(name, cont)
+            
+        tree = parser.parse()
+    
     returnForest = MarkdownForest(tree, name, metadata=meta)
     
     for backlink in backlinks:
