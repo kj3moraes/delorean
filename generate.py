@@ -7,14 +7,11 @@ def texting(text:str):
     print("got the text", text[:5])
 
 def collection_rec(node:Node, tree:Tree):
-    children = node.successors(tree.identifier)
-    child_nodes = [tree.get_node(child) for child in children]
-    for child in child_nodes:
-        if isinstance(child.data, TextNode):
-            texting(child.data.text)
-        elif isinstance(child.data, HeaderNode):
-            print("got the header", child.data)
-            collection_rec(child, tree)
+    a = tree.expand_tree(node.identifier, mode=Tree.WIDTH)
+    print(a)
+    subnodes = [tree.get_node(child) for child in a]
+    for subnode in subnodes:
+        print(subnode.data)
     
 
 def generate_forest(path_to_md_file:str):

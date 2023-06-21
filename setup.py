@@ -19,7 +19,7 @@ setup(
     url = "http://github.com/kj3moraes/delorean",
     packages = ['pydelorean', 'pydelorean.tree', 'pydelorean.parser'],
     tests_require = ['unittest'],
-    install_requires = ['markdown', 'beautifulsoup4', 'python-frontmatter'],
+    install_requires = ['markdown', 'treelib', 'beautifulsoup4'],
     download_url = 'https://github.com/kj3moraes/delorean/archive/%s.zip' % VERSION,
     classifiers = [
         "Topic :: Utilities",
