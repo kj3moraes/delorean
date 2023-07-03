@@ -6,7 +6,7 @@ import re
 import frontmatter
 from treelib import Tree
 from .utils import *
-from .tree.types import MarkdownForest, TextNode, HeaderNode, Node
+from .tree.types import MarkdownForest, TextNode, HeaderNode
 from .parser import *
 
 # ==================================================================================================
@@ -90,7 +90,7 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
 #                                           TEXTIFY
 # ==================================================================================================
 
-def convertRootToText(rootNode: Node) -> str:
+def convertRootToText(rootNode: HeaderNode) -> str:
     
     # BASE CASE: We just have text node.
     if isinstance(rootNode, TextNode):

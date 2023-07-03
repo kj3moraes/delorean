@@ -1,9 +1,8 @@
 import re
-from treelib import Tree
 from pydelorean.tree import TextNode, HeaderNode
+from bigtree import print_tree
 
-
-def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
+def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
     """ Function to build the provides tree varaible from the inputText. 
     Works for Github Flavored Markdown (GFM). 
 
@@ -16,8 +15,7 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
     if inputText == "":
         return None
     
-    tree = Tree()
-    root_id = tree.create_node(tag=name, identifier="root").identifier
+    root = HeaderNode("root", -1)
 
     # Default to the GFM header pattern
     HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"
@@ -30,17 +28,15 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
     # BASE CASE
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
-        tree.create_node(tag=inputText[0:min(10, len(inputText))],
-                         data=TextNode(inputText),
-                         parent=root_id)
-        return tree
+        text_node = TextNode(inputText)
+        root << text_node
+        return root
     
     # Is there text before the first header?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        tree.create_node(tag=textBefore[0:min(10, len(textBefore))],
-                        data=TextNode(textBefore),
-                        parent=root_id)
+        node = TextNode(textBefore)
+        root << node
 
     # Use a stack to keep track of the header levels.
     stack = []
@@ -54,12 +50,11 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
         # If this is the first header then create the root node automatically.
         if len(stack) == 0:
              # Create the header node with the current header.
-            node = tree.create_node(tag=currHeaderText,
-                                    data=HeaderNode(currHeaderText, currHeaderLevel, root_id),
-                                    parent=root_id)
+            node = TextNode(currHeaderText)
+            root << node
 
             # Add the node to the stack
-            stack.append((currHeaderLevel, currHeader, node.identifier))
+            stack.append((currHeaderLevel, currHeader, node))
             continue
         else:
             lastHeader = stack[-1]
@@ -70,15 +65,14 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
             # Extract the text between the current header and the previous header
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                tree.create_node(tag=textBetween[0:min(10, len(textBetween))],
-                                 data=TextNode(textBetween),
-                                 parent=lastHeader[-1])
+                node = TextNode(textBetween)
+                lastHeader[-1] << node
 
             # Create the header node and add it to the stack
-            node = tree.create_node(tag=currHeaderText,
-                                    data=HeaderNode(currHeaderText, currHeaderLevel, lastHeader[-1]),
-                                    parent=lastHeader[-1])
-            stack.append((currHeaderLevel, currHeader, node.identifier))
+            node = HeaderNode(currHeaderText, currHeaderLevel)
+            lastHeader[-1] << node
+            
+            stack.append((currHeaderLevel, currHeader, node))
             
         # CASE 2: If the current header level is less than or equal to the starting header level then we need to create a new tree.
         elif currHeaderLevel <= lastHeader[0]:
@@ -86,10 +80,9 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
             # Get the text between 
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                tree.create_node(tag=textBetween[0:min(10, len(textBetween))],
-                                 data=TextNode(textBetween),
-                                 parent=lastHeader[-1])
-            
+                node = TextNode(textBetween)
+                lastHeader[-1] << node
+                            
             # Pop off until you get to the node with a lower level than the current header level
             while len(stack) > 0:
                 if stack[-1][0] >= currHeaderLevel:
@@ -99,15 +92,52 @@ def buildTree(inputText:str, name:str, *args, **kwargs) -> Tree:
             
             if len(stack) == 0:
                 
-                node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, root_id), parent=root_id)
+                node = HeaderNode(currHeaderText, currHeaderLevel)
+                root << node
             else:
-                node = tree.create_node(currHeaderText, data=HeaderNode(currHeaderText, currHeaderLevel, stack[-1][-1]), parent=stack[-1][-1])
-            stack.append((currHeaderLevel, currHeader, node.identifier))
+                node = HeaderNode(currHeaderText, currHeaderLevel)
+                stack[-1][-1] << node
+            stack.append((currHeaderLevel, currHeader, node))
                 
                 
     # Check if there is any text after the last header
     if indices[-1][1] != len(inputText):
         textEnd = inputText[indices[-1][1]:].strip()
-        tree.create_node(tag=textEnd[:min(10, len(textEnd))], data=TextNode(textEnd), parent=stack[-1][-1])
+        node = TextNode(textEnd)
+        stack[-1][-1] << node
         
-    return tree
+    return root
+
+
+text=  """
+# Appendices
+
+The appendix begins with an epigraph by Pardot Kynes in which he considers the kind of existence available when humans increase in number in a finite environment.
+
+## Appendix I: The Ecology of Dune.
+This appendix details “the ecology of Dune.” It is heavily focused on the story of Pardot Kynes, Arrakis's first planetologist.
+
+## Appendix II: The Religion of Dune.
+Before the coming of [[Muad'Dib]], the Fremen of Arrakis practiced a religion whose roots in the Maometh Saari are there for any scholar to see. Many have traced the extensive borrowings from other religions. The most common example is the Hymn to Water, a direct copy from the Orange Catholic Liturgical Manual, calling for rain clouds which Arrakis had never seen. But there are more profound points of accord between the Kitab al-Ibar of the Fremen and the teachings of Bible, Ilm, and Fiqh.
+
+## Appendix III: Report on Bene Gesserit Motives and Purposes.
+This appendix details a “report on Bene Gesserit motives and purpose.”
+The narrator introduces it by noting that Lady Jessica commissioned the report directly after the “Arrakis Affair.” 
+
+### Narratives
+The document is noted as being extremely honest in tone.
+
+## Appendix IV: The Almanak eb-Ashraf (Selected Excerpts of the Noble Houses)
+This appendix details selected excerpts about the noble Houses of Dune. The first entry discusses the Padishah Emperor Shaddam IV of House Corrino. His rule is most significant for the “Arrakis Revolt,” which historians ascribe to his poor court politics. 
+
+# Terminology of the Imperium
+
+Hello there
+
+## Another One
+asda
+"""
+
+root = buildTree(text)
+
+print_tree(root)
