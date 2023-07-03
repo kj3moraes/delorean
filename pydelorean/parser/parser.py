@@ -9,8 +9,8 @@ class Parser:
         
     def parse(self) -> Tree:
         pass
-    
-    
+
+   
 class MarkdownParser(Parser):
     
     def __init__(self, document_name:str, text:str):
@@ -51,4 +51,22 @@ class YAMLParser(Parser):
         
     def parse(self) -> Tree:
         pass
+
+
+class JSONParser(Parser):
+    
+    def __init__(self, document_name:str, text:str):
+        super().__init__(document_name, text)
         
+    def parse(self) -> Tree:
+        pass
+    
+
+class XMLParser(Parser):
+    
+    def __init__(self, document_name:str, text:str):
+        super().__init__(document_name, text)
+        
+    def parse(self) -> Tree:
+        pass
+    

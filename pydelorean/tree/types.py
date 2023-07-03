@@ -81,37 +81,5 @@ class HeaderNode(Node):
         self.corpus.append(text)
 
 
-class MarkdownForest:
-    
-    def __init__(self, root:HeaderNode, documentName:str="[document]", metadata:dict=None):
-        self.documentName = documentName
-        self.metadata = metadata
-        self.root = root
-        self.treeCount = len(root.children('root'))
-        self.backlinks = []
-        self.tags = []
-        
-    def __str__(self):
-        return str(self.root)
-    
-    def __len__(self):
-        return self.treeCount
 
-    def add_root(self, root:HeaderNode):
-        self.root = root
-
-    def get_metadata(self):
-        return self.metadata
-    
-    def add_backlink(self, backlink:str):
-        self.backlinks.append(backlink)
-    
-    def get_backlinks(self):
-        return self.backlinks
-    
-    def add_tag(self, tag:str):
-        self.tags.append(tag)
-        
-    def get_tags(self):
-        return self.tags
 
