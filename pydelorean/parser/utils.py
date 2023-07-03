@@ -1,6 +1,6 @@
 import re
 from pydelorean.tree import TextNode, HeaderNode
-from bigtree import print_tree
+from bigtree import Node, print_tree
 
 def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
     """ Function to build the provides tree varaible from the inputText. 
@@ -15,7 +15,7 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
     if inputText == "":
         return None
     
-    root = HeaderNode("root", -1)
+    root = Node("root")
 
     # Default to the GFM header pattern
     HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"
@@ -28,15 +28,15 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
     # BASE CASE
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
-        text_node = TextNode(inputText)
-        root << text_node
+        text_node = TextNode(name=inputText, text=inputText)
+        root >> text_node
         return root
     
     # Is there text before the first header?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        node = TextNode(textBefore)
-        root << node
+        node = TextNode(name=textBefore, text=textBefore)
+        root >> node
 
     # Use a stack to keep track of the header levels.
     stack = []
@@ -50,8 +50,8 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
         # If this is the first header then create the root node automatically.
         if len(stack) == 0:
              # Create the header node with the current header.
-            node = TextNode(currHeaderText)
-            root << node
+            node = TextNode(name=currHeaderText, text=currHeaderText)
+            root >> node
 
             # Add the node to the stack
             stack.append((currHeaderLevel, currHeader, node))
@@ -65,12 +65,12 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
             # Extract the text between the current header and the previous header
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                node = TextNode(textBetween)
-                lastHeader[-1] << node
+                node = TextNode(name=textBetween, text=textBetween)
+                lastHeader[-1] >> node
 
             # Create the header node and add it to the stack
-            node = HeaderNode(currHeaderText, currHeaderLevel)
-            lastHeader[-1] << node
+            node = HeaderNode(name=currHeaderText, header=currHeaderText, headerNumber=currHeaderLevel)
+            lastHeader[-1] >> node
             
             stack.append((currHeaderLevel, currHeader, node))
             
@@ -80,8 +80,8 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
             # Get the text between 
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                node = TextNode(textBetween)
-                lastHeader[-1] << node
+                node = TextNode(name=textBetween, text=textBetween)
+                lastHeader[-1] >> node
                             
             # Pop off until you get to the node with a lower level than the current header level
             while len(stack) > 0:
@@ -92,19 +92,19 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
             
             if len(stack) == 0:
                 
-                node = HeaderNode(currHeaderText, currHeaderLevel)
-                root << node
+                node = HeaderNode(name=currHeaderText, header=currHeaderText, headerNumber=currHeaderLevel)
+                root >> node
             else:
-                node = HeaderNode(currHeaderText, currHeaderLevel)
-                stack[-1][-1] << node
+                node = HeaderNode(name=currHeaderText, header=currHeaderText, headerNumber=currHeaderLevel)
+                stack[-1][-1] >> node
             stack.append((currHeaderLevel, currHeader, node))
                 
                 
     # Check if there is any text after the last header
     if indices[-1][1] != len(inputText):
         textEnd = inputText[indices[-1][1]:].strip()
-        node = TextNode(textEnd)
-        stack[-1][-1] << node
+        node = TextNode(name=textEnd, text=textEnd)
+        stack[-1][-1] >> node
         
     return root
 

@@ -2,12 +2,12 @@
 
 """
 
-from bigtree import BaseNode
+from bigtree import BaseNode, Node
 
 # TODO: Add all the documentation and convert to snake case soon.
 
 
-class TextNode(BaseNode):
+class TextNode(Node):
     """_summary_
 
     Args:
@@ -22,9 +22,9 @@ class TextNode(BaseNode):
     
     FRACTION_PRINTABLE = 0.25
     
-    def __init__(self, text:str, **kwargs):
+    def __init__(self, name:str, text:str, **kwargs):
         self.text = text
-        super().__init__(**kwargs)
+        super().__init__(name, **kwargs)
         
         
     def __getitem__(self, index:int):
@@ -46,19 +46,19 @@ class TextNode(BaseNode):
     def text(self, text:str):
         self._text = text
 
-class HeaderNode(BaseNode):
+class HeaderNode(Node):
     """_summary_
 
     Args:
         Node (_type_): _description_
     """
     
-    def __init__(self, header:str, headerNumber:int, **kwargs):
+    def __init__(self, name:str, header:str, headerNumber:int, **kwargs):
         self.header = header
         self.headerNumber = headerNumber
         self.name = header
         self.corpus = []
-        super().__init__(**kwargs)
+        super().__init__(name, **kwargs)
         
     def __str__(self):
         return self.header
