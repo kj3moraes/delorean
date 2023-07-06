@@ -6,7 +6,7 @@ import re
 import frontmatter
 from treelib import Tree
 from .utils import *
-from .tree.types import MarkdownForest, TextNode, HeaderNode
+from .tree import MarkdownForest, TextNode, HeaderNode
 from .parser import *
 
 # ==================================================================================================
