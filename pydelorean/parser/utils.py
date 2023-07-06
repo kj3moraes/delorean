@@ -20,6 +20,7 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
     # Default to the GFM header pattern
     HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"
     
+    inputText = inputText.strip()
     matches = re.finditer(HEADER_PATTERN, inputText, re.MULTILINE)
         
     # Get all the indices of the headers
@@ -47,10 +48,10 @@ def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
         currHeaderText = inputText[currHeader[0]:currHeader[1]]
         currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
         
-        # If this is the first header then create the root node automatically.
+        # If this is the first header then create the header node automatically.
         if len(stack) == 0:
              # Create the header node with the current header.
-            node = TextNode(name=currHeaderText, text=currHeaderText)
+            node = HeaderNode(name=currHeaderText, header=currHeaderText, headerNumber=currHeaderLevel)
             root >> node
 
             # Add the node to the stack
@@ -136,7 +137,7 @@ Hello there
 
 ## Another One
 asda
-"""
+# """
 
 root = buildTree(text)
 

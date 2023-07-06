@@ -22,7 +22,9 @@ class MarkdownForest:
         self.documentName = documentName
         self.metadata = metadata
         self.root = root
-        self.treeCount = len(root.children('root'))
+
+        # TODO: Implement a method to count the number of nodes in the tree
+        
         self.backlinks = []
         self.tags = []
         
