@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 from .delorean import mdtreeify, findMetadata
-from .tree.forest import MarkdownForest
+from .tree.node import Forest
+from .utils import FileType
 import re
 
-def treeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
+def treeify(name:str, md:str, *args, **kwargs) -> Forest:
     """Converts a markdown document into a MarkdownForest object.
 
     Args:

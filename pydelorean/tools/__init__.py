@@ -1,6 +1,4 @@
-from bigtree import Node
-from pydelorean.tree.types import HeaderNode, TextNode
-from pydelorean import treeify
+from pydelorean.tree.node import TextNode
 
 def get_progressive_expansion(node, **kwargs) -> list:
     

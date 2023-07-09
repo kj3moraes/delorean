@@ -6,7 +6,7 @@ import re
 import frontmatter
 from treelib import Tree
 from .utils import *
-from .tree import MarkdownForest, TextNode, HeaderNode
+from .tree import *
 from .parser import *
 
 # ==================================================================================================
@@ -28,6 +28,7 @@ def findBacklinks(input_text:str) -> list:
     backlinks = re.findall(pattern, input_text)
     return backlinks
 
+
 def findTags(input_text:str) -> list:
     """
     Function to find all tags in a given text.
@@ -40,9 +41,11 @@ def findTags(input_text:str) -> list:
     tags = re.findall(pattern, input_text)
     return tags
 
+
 def findMetadata(input_text:str):
     post = frontmatter.loads(input_text)
     return post.metadata, post.content
+
 
 def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     """
@@ -85,6 +88,17 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
 
     return returnForest
 
+
+def rsttreeify(name:str, rst:str, *args, **kwargs) -> Tree:
+    pass
+
+
+def asciidoc_treeify(name:str, asciidoc:str, *args, **kwargs) -> Tree:
+    pass
+
+
+def yaml_treeify(name:str, yaml:str, *args, **kwargs) -> Tree:
+    pass
 
 # ==================================================================================================
 #                                           TEXTIFY

@@ -1,4 +1,4 @@
-from .types import HeaderNode
+from .node import HeaderNode
 
 
 class Forest:
@@ -7,9 +7,6 @@ class Forest:
         self.documentName = documentName
         self.metadata = metadata
         self.root = root
-        self.treeCount = len(root.children('root'))
-        self.backlinks = []
-        self.tags = []
         
     # TODO: Implement __str__ and __len__ methods
     # FIGUREOUT: What other methods should this base class have ?
