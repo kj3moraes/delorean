@@ -25,10 +25,7 @@ You can find the library page here `here <nil>`__
 Quick Usage Guide
 -----------------
 
-delorean offers only one function ``treeify``, which generates a
-Python object from markup text. The object is a [treelib](https://github.com/caesar0301/treelib) Tree structure.
-
-Take, for example, the following markdown file.
+Check back later for this section.
 
 [[ chikin.md ]]
 

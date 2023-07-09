@@ -2,38 +2,20 @@
 
 """
 
-from treelib import Tree
+from bigtree import BaseNode, Node
 
 # TODO: Add all the documentation and convert to snake case soon.
 
-class Node:
-    """_summary_
-    """
-    
-    def __init__(self):
-        pass
-                   
-    def __str__(self):
-        return f"{self.__class__.__name__}()"
-
 
 class TextNode(Node):
-    """_summary_
 
-    Args:
-        Node (_type_): _description_
-
-    Raises:
-        IndexError: _description_
-
-    Returns:
-        _type_: _description_
-    """
     
     FRACTION_PRINTABLE = 0.25
     
-    def __init__(self, text:str):
+    def __init__(self, name:str, text:str, **kwargs):
         self.text = text
+        super().__init__(name, **kwargs)
+        
         
     def __getitem__(self, index:int):
         if index < 0 or index >= len(self.text):
@@ -54,18 +36,16 @@ class TextNode(Node):
     def text(self, text:str):
         self._text = text
 
-class HeaderNode(Node):
-    """_summary_
 
-    Args:
-        Node (_type_): _description_
-    """
+class HeaderNode(Node):
+
     
-    def __init__(self, header:str, headerNumber:int, parentID):
-        self.parentID = parentID
+    def __init__(self, name:str, header:str, headerNumber:int, **kwargs):
         self.header = header
         self.headerNumber = headerNumber
+        self.name = header
         self.corpus = []
+        super().__init__(name, **kwargs)
         
     def __str__(self):
         return self.header
@@ -88,37 +68,5 @@ class HeaderNode(Node):
         self.corpus.append(text)
 
 
-class MarkdownForest:
-    
-    def __init__(self, root:Tree, documentName:str="[document]", metadata:dict=None):
-        self.documentName = documentName
-        self.metadata = metadata
-        self.root = root
-        self.treeCount = len(root.children('root'))
-        self.backlinks = []
-        self.tags = []
-        
-    def __str__(self):
-        return str(self.root)
-    
-    def __len__(self):
-        return self.treeCount
 
-    def add_root(self, root:Tree):
-        self.root = root
-
-    def get_metadata(self):
-        return self.metadata
-    
-    def add_backlink(self, backlink:str):
-        self.backlinks.append(backlink)
-    
-    def get_backlinks(self):
-        return self.backlinks
-    
-    def add_tag(self, tag:str):
-        self.tags.append(tag)
-        
-    def get_tags(self):
-        return self.tags
 

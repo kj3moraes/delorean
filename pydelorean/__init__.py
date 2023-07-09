@@ -1,19 +1,9 @@
 from bs4 import BeautifulSoup
-from .delorean import mdtreeify, findMetadata
-from .tree.types import MarkdownForest
-from .utils import FileType
+from .delorean import mdtreeify, find_metadata
+from .tree import Forest
 import re
 
-def treeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
-    """Converts a markdown document into a MarkdownForest object.
-
-    Args:
-        name (str, optional): Name of the document.
-        md (str, optional): Contents of the document.
-
-    Returns:
-        MarkdownForest: A forest representation of the markdown document.
-    """
+def treeify(name:str, md:str, *args, **kwargs) -> Forest:
     
     return mdtreeify(name, md, *args, **kwargs)
 
@@ -30,12 +20,9 @@ def treeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
 #     return mdtextify(tree, *args, **kwargs)
 
 def clean_markdown(md:str) -> str:
-    """
-    Cleans markdown file of bold and italics formatting.
-    """
         
     # Remove the metadata
-    _, markdown_text = findMetadata(md)
+    _, markdown_text = find_metadata(md)
     
      # Create a BeautifulSoup object with the input markdown text
     soup = BeautifulSoup(markdown_text, 'html.parser')

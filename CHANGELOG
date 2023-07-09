@@ -5,13 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.3.0] - 2023-07-01
+## [v1.3.4] - 2023-0
+
+## Added
+
+- Using the bigtree library for tree building
+
+
+### Fixed
+
+- Overall bug fixes for the tree building process
+- Placeholders for the classes of markup languages.
+
+### Removed
+
+- Removed all uses cases of the treelib library
+
+
+## [v1.3.3] - 2023-07-05
+
+### Fixed 
+
+- Runtime bug addressed for treebuild
+- Bugs for name of document and tree output
+
+## [v1.3.1] - 2023-06-30
+
+### Fixed 
+
+- Long description is now .rst file format.
+- QOL improvements
+
+## [v1.2.0] - 2023-05-18
+
+### Added
+
+- Backlinks and tags storage.
+- Operations with backlinks and tags for the MarkdownForest type
+
+## [v1.1.0] - 2023-05-17
+
+### Added 
+
+- Parsing of metadata into dictionaries
+- Printing of metadata from the dictionary
+
+## [v1.0.0] - 2023-05-14
+
+### Removed
+
+- Access to the TreeOfContents class.
+
+## [v0.3.1] - 2023-07-01
 
 ### Added
 
 - A new subpackage called tools with the `get_expansion` function. This function is used to get the expansion of a markdown document. The expansion is the list of all the headers in the document and their corresponding texts. 
-
-
 
 ## [v0.2.1] - 2023-05-13
 
