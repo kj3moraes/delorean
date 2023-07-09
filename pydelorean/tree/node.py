@@ -42,7 +42,7 @@ class HeaderNode(Node):
     
     def __init__(self, name:str, header:str, headerNumber:int, **kwargs):
         self.header = header
-        self.headerNumber = headerNumber
+        self._header_level = headerNumber
         self.name = header
         self.corpus = []
         super().__init__(name, **kwargs)
@@ -51,15 +51,15 @@ class HeaderNode(Node):
         return self.header
     
     def __repr__(self):
-        return f"(h{self.headerNumber}) {self.header}"
+        return f"(h{self._header_level}) {self.header}"
     
     @property
-    def headerLevel(self) -> int:
-        return self.headerNumber
+    def header_level(self) -> int:
+        return self._header_level
     
-    @headerLevel.setter
-    def headerLevel(self, headerNumber:int) -> None:
-        self._headerNumber = headerNumber
+    @header_level.setter
+    def header_level(self, headerNumber:int) -> None:
+        self._header_level = headerNumber
         
     def get_corpus(self) -> list:
         return self.corpus
