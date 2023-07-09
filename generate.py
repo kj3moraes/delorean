@@ -1,5 +1,6 @@
 import os, sys
 from pydelorean import treeify
+from bigtree import print_tree
 from pydelorean.tools import get_progressive_expansion
 
 def texting(text:str):
@@ -15,14 +16,16 @@ def generate_forest(path_to_md_file:str):
     forest = treeify(name_of_file, markdown_text)
     print(forest)
     
-    root = forest.root.get_node('root')
+    root = forest.root
     # collection_rec(root, forest.root)
     
-    first_child = forest.root.children(root.identifier)[0]
-    expanse = get_progressive_expansion(forest.root, first_child.identifier, append=True)
+    print_tree(root)
+    
+    # first_child = forest.root.children(root.identifier)[0]
+    # expanse = get_progressive_expansion(forest.root, first_child.identifier, append=True)
 
-    for node in expanse:
-        print(f"{node}\n\n")
+    # for node in expanse:
+    #     print(f"{node}\n\n")
     
     # tree_id = forest.root.identifier
     # children = root.successors(tree_id)
