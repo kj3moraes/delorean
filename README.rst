@@ -9,7 +9,7 @@ vice versa. There is greater functionality available to modify, prune,
 add and delete parts of documents when there are in the MarkdownTree
 structure.
 
-The full list of features can be found under `Features <##%20Features>`__
+The full list of features can be found in FEATURES.md or in the documentation.
 
 Install
 -------
@@ -27,63 +27,62 @@ Quick Usage Guide
 
 Check back later for this section.
 
-[[ chikin.md ]]
+.. [[ chikin.md ]]
 
-.. code:: markdown
+.. .. code:: markdown
 
-   # Chikin Tales
+..    # Chikin Tales
 
-   Once there was a chikin.
+..    Once there was a chikin.
 
-   ## Chapter 1 : Chikin Fly
+..    ## Chapter 1 : Chikin Fly
 
-   Chickens don't fly. They do only the following:
+..    Chickens don't fly. They do only the following:
 
-   - waddle
-   - plop 
+..    - waddle
+..    - plop 
 
 
-   ### Waddling
+..    ### Waddling
 
-   A waddle is what these birds do.
+..    A waddle is what these birds do.
 
-   ## Chapter 2 : Chikin Scream
+..    ## Chapter 2 : Chikin Scream
 
-   ### Plopping
+..    ### Plopping
 
-   Plopping involves three steps:
+..    Plopping involves three steps:
 
-   1. squawk
-   2. plop
-   3. repeat, unless ordered to squat
+..    1. squawk
+..    2. plop
+..    3. repeat, unless ordered to squat
 
-.. code:: text
+.. .. code:: text
 
-                  Chikin Tales
-                 /     \       \
-                /       \       \ 
-          (Once th..)    |       \
-                         |        \
-                     Chapter 1     \
-                     /     |     Chapter 2   
-                    /      |         |
-          (Chickens do..)  |       Plopping
-                           |         |
-                        Waddling   (Plopping...)
-                           |
-                       (A waddle...)
+..                   Chikin Tales
+..                  /     \       \
+..                 /       \       \ 
+..           (Once th..)    |       \
+..                          |        \
+..                      Chapter 1     \
+..                      /     |     Chapter 2   
+..                     /      |         |
+..           (Chickens do..)  |       Plopping
+..                            |         |
+..                         Waddling   (Plopping...)
+..                            |
+..                        (A waddle...)
 
-For the full usage guide, access the SAMPLES.md file.
+For a usage guide, access the `samples/` directory or check out the
+documentation page here - [nil](nil)
 
 Features
 --------
 
 Some of the features of this library are:
 
-1. Converts a markdown file to a manipulatable, light Python data
-   structure.
-2. Converts the Python data structure back into a Markdown file.
-3. Traverse and edit the Python data structure.
+Refer to the FEATURES.md file for more information or you can visit the 
+documentation page here - [nil](nil)
 
 License
 -------
