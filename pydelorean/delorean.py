@@ -15,7 +15,7 @@ from .parser import *
 # TODO: Rename to snake_case in the future.
 
 
-def findBacklinks(input_text:str) -> list:
+def find_backlinks(input_text:str) -> list:
     """ 
     Function to find all backlinks in a given text.
     """
@@ -28,7 +28,7 @@ def findBacklinks(input_text:str) -> list:
     return backlinks
 
 
-def findTags(input_text:str) -> list:
+def find_tags(input_text:str) -> list:
     """
     Function to find all tags in a given text.
     """
@@ -41,7 +41,7 @@ def findTags(input_text:str) -> list:
     return tags
 
 
-def findMetadata(input_text:str):
+def find_metadata(input_text:str):
     post = frontmatter.loads(input_text)
     return post.metadata, post.content
 
@@ -51,10 +51,10 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     Converts markdown file to a MarkdownForest
     """
     
-    meta, cont = findMetadata(md)
+    meta, cont = find_metadata(md)
     
-    backlinks = findBacklinks(cont)
-    tags = findTags(cont)
+    backlinks = find_backlinks(cont)
+    tags = find_tags(cont)
     
     if cont == "":
         # If the file is empty, just create a root node

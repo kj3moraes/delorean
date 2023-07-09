@@ -8,17 +8,7 @@ from bigtree import BaseNode, Node
 
 
 class TextNode(Node):
-    """_summary_
 
-    Args:
-        Node (_type_): _description_
-
-    Raises:
-        IndexError: _description_
-
-    Returns:
-        _type_: _description_
-    """
     
     FRACTION_PRINTABLE = 0.25
     
@@ -48,11 +38,7 @@ class TextNode(Node):
 
 
 class HeaderNode(Node):
-    """_summary_
 
-    Args:
-        Node (_type_): _description_
-    """
     
     def __init__(self, name:str, header:str, headerNumber:int, **kwargs):
         self.header = header

@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from .delorean import mdtreeify, findMetadata
+from .delorean import mdtreeify, find_metadata
 from .tree import Forest
 import re
 
@@ -22,7 +22,7 @@ def treeify(name:str, md:str, *args, **kwargs) -> Forest:
 def clean_markdown(md:str) -> str:
         
     # Remove the metadata
-    _, markdown_text = findMetadata(md)
+    _, markdown_text = find_metadata(md)
     
      # Create a BeautifulSoup object with the input markdown text
     soup = BeautifulSoup(markdown_text, 'html.parser')
