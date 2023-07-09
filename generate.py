@@ -1,8 +1,6 @@
 import os, sys
 from pydelorean import treeify
-from pydelorean.tree.node import TextNode, HeaderNode
 from pydelorean.tools import get_progressive_expansion
-from treelib import Tree, Node
 
 def texting(text:str):
     print("got the text", text[:5])

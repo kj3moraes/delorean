@@ -2,7 +2,7 @@ import re
 from pydelorean.tree import TextNode, HeaderNode
 from bigtree import Node, print_tree
 
-def buildTree(inputText:str, *args, **kwargs) -> HeaderNode:
+def buildTree(inputText:str, *args, **kwargs) -> Node:
     """ Function to build the provides tree varaible from the inputText. 
     Works for Github Flavored Markdown (GFM). 
 

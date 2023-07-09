@@ -54,3 +54,14 @@ class MarkdownForest:
 class RestructuredForest:
     pass
 
+
+class AsciidocForest:
+    pass
+
+
+class YamlForest:
+    pass
+
+
+class JSONForest:
+    pass

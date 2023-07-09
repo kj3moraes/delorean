@@ -4,7 +4,6 @@
 import re
 
 import frontmatter
-from treelib import Tree
 from .utils import *
 from .tree import *
 from .parser import *
@@ -47,7 +46,7 @@ def findMetadata(input_text:str):
     return post.metadata, post.content
 
 
-def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
+def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """
     Converts markdown file to a MarkdownForest
     """
@@ -89,16 +88,21 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> Tree:
     return returnForest
 
 
-def rsttreeify(name:str, rst:str, *args, **kwargs) -> Tree:
+def rsttreeify(name:str, rst:str, *args, **kwargs) -> RestructuredForest:
     pass
 
 
-def asciidoc_treeify(name:str, asciidoc:str, *args, **kwargs) -> Tree:
+def asciidoc_treeify(name:str, asciidoc:str, *args, **kwargs) -> AsciidocForest:
     pass
 
 
-def yaml_treeify(name:str, yaml:str, *args, **kwargs) -> Tree:
+def yaml_treeify(name:str, yaml:str, *args, **kwargs) -> YamlForest:
     pass
+
+
+def jsontreeify(name:str, json:str, *args, **kwargs) -> JSONForest:
+    pass
+
 
 # ==================================================================================================
 #                                           TEXTIFY
