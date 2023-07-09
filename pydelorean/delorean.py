@@ -4,7 +4,7 @@
 import re
 
 import frontmatter
-from .utils import *
+from .files import *
 from .tree import *
 from .parser import *
 

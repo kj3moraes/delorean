@@ -3,6 +3,9 @@ from .delorean import mdtreeify, find_metadata
 from .tree import Forest
 import re
 
+
+# TODO: Check the type of the input and call the appropriate function
+# Use the newly defined File classes for this. 
 def treeify(name:str, md:str, *args, **kwargs) -> Forest:
     
     return mdtreeify(name, md, *args, **kwargs)
@@ -19,6 +22,8 @@ def treeify(name:str, md:str, *args, **kwargs) -> Forest:
     
 #     return mdtextify(tree, *args, **kwargs)
 
+
+# TODO: I want to only expose treeify and textify to the user. Move this someplace else.
 def clean_markdown(md:str) -> str:
         
     # Remove the metadata

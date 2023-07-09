@@ -21,3 +21,4 @@ def get_progressive_expansion(node, **kwargs) -> list:
         returned_list.append((header, final_corpus))
     return returned_list
         
+
