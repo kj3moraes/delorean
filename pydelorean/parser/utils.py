@@ -8,7 +8,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
     if inputText == "":
         return None
     
-    root = Node("root")
+    root = Node(kwargs["document_name"])
 
     # Default to the GFM header pattern
     HEADER_PATTERN = kwargs['header_pattern'] if 'header_pattern' in kwargs else r"^(#+\s+)(.*)"

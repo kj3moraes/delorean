@@ -6,7 +6,11 @@ def get_progressive_expansion(node, **kwargs) -> list:
     if isinstance(node, TextNode):
         return [(node.text, "")]
     
-    header = node.header
+    # BASE CASE: root node 
+    if node.is_root:
+        header = node.name
+    else:
+        header = node.header
     children = node.children
     returned_list = []
     final_corpus = ""
@@ -21,4 +25,3 @@ def get_progressive_expansion(node, **kwargs) -> list:
         returned_list.append((header, final_corpus))
     return returned_list
         
-
