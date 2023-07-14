@@ -17,7 +17,7 @@ The appendix begins with an epigraph by Pardot Kynes in which he considers the k
 This appendix details “the ecology of Dune.” It is heavily focused on the story of Pardot Kynes, Arrakis's first planetologist.
 
 ## Appendix II: The Religion of Dune.
-Before the coming of [[Muad'Dib]], the Fremen of Arrakis practiced a religion whose roots in the Maometh Saari are there for any scholar to see. Many have traced the extensive borrowings from other religions. The most common example is the Hymn to Water, a direct copy from the Orange Catholic Liturgical Manual, calling for rain clouds which Arrakis had never seen. But there are more profound points of accord between the Kitab al-Ibar of the Fremen and the teachings of Bible, Ilm, and Fiqh.
+Before the coming of [[Muad'Dib]], the Fremen of Arrakis practiced a religion whose roots in the Maometh Saari are there for any scholar to see.
 
 ## Appendix III: Report on Bene Gesserit Motives and Purposes.
 This appendix details a “report on Bene Gesserit motives and purpose.”
@@ -34,4 +34,5 @@ This appendix details selected excerpts about the noble Houses of Dune. The firs
 Hello there
 
 ## Another One
-asda
+
+asdfas
