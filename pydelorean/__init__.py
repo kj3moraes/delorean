@@ -1,24 +1,22 @@
 from bs4 import BeautifulSoup
-from .delorean import mdtreeify, find_metadata
+from .delorean import *
 from .tree import Forest
 import re
 
-def treeify(name:str, md:str, *args, **kwargs) -> Forest:
+
+# TODO: Check the type of the input and call the appropriate function
+# Use the newly defined File classes for this. 
+def treeify(name:str, text:str, *args, **kwargs) -> Forest:
     
-    return mdtreeify(name, md, *args, **kwargs)
+    return mdtreeify(name, text, *args, **kwargs)
 
-# def markdownify(tree:MarkdownForest, *args, **kwargs) -> str:
-#     """_summary_
 
-#     Args:
-#         tree (MarkdownForest): _description_
-
-#     Returns:
-#         str: _description_
-#     """
+def textify(forest:Forest, *args, **kwargs) -> str:
     
-#     return mdtextify(tree, *args, **kwargs)
+    return mdtextify(forest)
 
+
+# TODO: I want to only expose treeify and textify to the user. Move this someplace else.
 def clean_markdown(md:str) -> str:
         
     # Remove the metadata

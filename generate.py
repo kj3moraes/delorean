@@ -1,5 +1,5 @@
 import os, sys
-from pydelorean import treeify
+from pydelorean import treeify, textify
 from bigtree import print_tree
 from pydelorean.tools import get_progressive_expansion
 
@@ -20,6 +20,9 @@ def generate_forest(path_to_md_file:str):
     # collection_rec(root, forest.root)
     
     print_tree(root)
+    
+    to_text = textify(forest)
+    print(to_text)
     
     # first_child = forest.root.children(root.identifier)[0]
     # expanse = get_progressive_expansion(forest.root, first_child.identifier, append=True)

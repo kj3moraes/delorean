@@ -18,7 +18,7 @@ class MarkdownParser(Parser):
     def parse(self) -> Node:
         HEADER_PATTERN = r"^(#+\s+)(.*)"
         
-        tree = build_tree(self.text, self.document_name, header_pattern=HEADER_PATTERN)
+        tree = buildTree(self.text, document_name=self.document_name, header_pattern=HEADER_PATTERN)
         return tree
         
 
@@ -30,7 +30,7 @@ class RestructuredParser(Parser):
     def parse(self) -> Node:
         HEADER_PATTERN = r'^(\S.*)\n[=~`\'^"-]+$'
         
-        tree = build_tree(self.text, self.document_name, header_pattern=HEADER_PATTERN)
+        tree = buildTree(self.text, document_name=self.document_name, header_pattern=HEADER_PATTERN)
         return tree
         
 

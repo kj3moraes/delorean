@@ -4,7 +4,7 @@
 import re
 
 import frontmatter
-from .utils import *
+from .files import *
 from .tree import *
 from .parser import *
 
@@ -58,25 +58,12 @@ def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     
     if cont == "":
         # If the file is empty, just create a root node
-        tree = Tree()
-        tree.create_node(tag=name, identifier="root").identifier
-    else:
-        # Based on the file type specified by the user, choose a parser
-        if 'type' in kwargs:
-            if kwargs['type'] == FileType.MARKDOWN:
-                parser = MarkdownParser(name, cont)
-            elif kwargs['type'] == FileType.RESTRUCTUREDTEXT:
-                parser = RestructuredParser(name, cont)
-            elif kwargs['type'] == FileType.TXT:
-                parser = TextParser(name, cont)
-            elif kwargs['type'] == FileType.YAML:
-                parser = YAMLParser(name, cont)
-            else:
-                raise ValueError("Invalid file type.")
-        else:
-            parser = MarkdownParser(name, cont)
-            
-        tree = parser.parse()
+        tree = Node("root")
+        return tree
+    
+    
+    parser = MarkdownParser(name, cont)
+    tree = parser.parse()
     
     returnForest = MarkdownForest(tree, name, metadata=meta)
     
@@ -108,36 +95,70 @@ def jsontreeify(name:str, json:str, *args, **kwargs) -> JSONForest:
 #                                           TEXTIFY
 # ==================================================================================================
 
-def convertRootToText(rootNode: HeaderNode) -> str:
+
+def header_node_to_text(rootNode: HeaderNode) -> str:
     
     # BASE CASE: We just have text node.
     if isinstance(rootNode, TextNode):
-        return repr(rootNode) + "\n"
+        return rootNode.text + "\n\n"
     
     # For the header node
-    headerLevel = rootNode.get_header_level()
-    returnString = '#'*headerLevel + " " + str(rootNode) + "\n"
-    for _, child in enumerate(rootNode):
-        returnString += convertRootToText(child)
+    headerLevel = rootNode.header_level
+    returnString = str(rootNode) + "\n"
+    for _, child in enumerate(rootNode.children):
+        returnString += header_node_to_text(child)
     
     return returnString    
      
-def convertDictToMetadata(metadata:dict) -> str:
+
+def convert_to_metadata(metadata_dict:dict) -> str:
     yaml = "---\n"
-    for key, value in metadata.items():
+    for key, value in metadata_dict.items():
+        
         if isinstance(value, list):
             yaml += f"{key}: \n"
             for elem in value:
                 yaml += f"  - {elem}\n"
             continue
+        
         yaml += f"{key}: {value}\n"
     yaml += "---\n"
     return yaml
 
-# FIXME: Change the mdtextify implenmentation to use the new tree structure.
-# def mdtextify(forest:MarkdownForest, *args, **kwargs) -> str:
+
+def mdtextify(forest: MarkdownForest) -> str:
+    """
+    Converts a MarkdownForest to a markdown file.
+    """
     
-#     finalText = convertDictToMetadata(forest.metadata)
-#     for i, tree in enumerate(forest):
-#         finalText += convertRootToText(tree.get_root())
-#     return finalText
+    returnString = ""
+    
+    # Get the root node
+    root = forest.root
+    
+    # Get the metadata
+    metadata = forest.get_metadata()
+    returnString = convert_to_metadata(metadata) + "\n"
+    
+    for node in root.children:
+        returnString += header_node_to_text(node) + "\n"
+    
+    return returnString
+
+
+def rsttextify(forest: RestructuredForest) -> str:
+    
+    pass
+
+
+def asciidoctextify(forest: AsciidocForest) -> str:
+    pass
+
+
+def yamltextify(forest: YamlForest) -> str:
+    pass
+
+
+def jsontextify(forest: JSONForest) -> str:
+    pass
+
