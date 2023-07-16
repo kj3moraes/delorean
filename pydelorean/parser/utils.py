@@ -1,5 +1,5 @@
 import re
-from pydelorean.tree import TextNode, HeaderNode
+from pydelorean.base import TextNode, HeaderNode
 from bigtree import Node, print_tree
 
 def build_tree(inputText:str, *args, **kwargs) -> Node:

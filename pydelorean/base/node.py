@@ -9,7 +9,7 @@ from bigtree import Node
 
 class TextNode(Node):
     
-    FRACTION_PRINTABLE = 0.25
+    FRACTION_PRINTABLE = 0.25   
     
     def __init__(self, name:str, text:str, **kwargs):
         self.text = text

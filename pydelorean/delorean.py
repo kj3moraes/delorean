@@ -1,50 +1,15 @@
 """ This file contains the main functions for the delorean package.
 """
-    
-import re
-
-import frontmatter
 from .files import *
-from .tree import *
+from .base import *
 from .parser import *
+from .tools import *
 
 # ==================================================================================================
 #                                           TREEIFY
 # ==================================================================================================
 
 # TODO: Rename to snake_case in the future.
-
-
-def find_backlinks(input_text:str) -> list:
-    """ 
-    Function to find all backlinks in a given text.
-    """
-    
-    backlinks = []
-
-    # Regular expression pattern to match backlinks
-    pattern = r'\[\[(.*?)\]\]'
-    backlinks = re.findall(pattern, input_text)
-    return backlinks
-
-
-def find_tags(input_text:str) -> list:
-    """
-    Function to find all tags in a given text.
-    """
-    
-    tags = []
-
-    # Regular expression pattern to match backlinks
-    pattern = r'#([a-zA-Z0-9_]+)'
-    tags = re.findall(pattern, input_text)
-    return tags
-
-
-def find_metadata(input_text:str):
-    post = frontmatter.loads(input_text)
-    return post.metadata, post.content
-
 
 def mdtreeify(name:str, md:str, *args, **kwargs) -> MarkdownForest:
     """

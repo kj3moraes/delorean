@@ -1,7 +1,7 @@
 import os, sys
 from pydelorean import treeify, textify
 from bigtree import print_tree
-from pydelorean.tools import get_progressive_expansion
+from pydelorean.tools import get_progressive_expansion, clean_markdown
 
 def texting(text:str):
     print("got the text", text[:5])
@@ -21,7 +21,7 @@ def generate_forest(path_to_md_file:str):
 
     for header, para in expanse:
         print(header, "\n=====================")
-        print(para)
+        print(clean_markdown(para, remove_header_tags=True))
         print()
     
     
