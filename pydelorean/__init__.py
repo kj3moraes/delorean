@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from .delorean import *
-from .tree import Forest
+from .base import Forest
 import re
 
 

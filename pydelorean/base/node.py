@@ -2,15 +2,14 @@
 
 """
 
-from bigtree import BaseNode, Node
+from bigtree import Node
 
 # TODO: Add all the documentation and convert to snake case soon.
 
 
 class TextNode(Node):
-
     
-    FRACTION_PRINTABLE = 0.25
+    FRACTION_PRINTABLE = 0.25   
     
     def __init__(self, name:str, text:str, **kwargs):
         self.text = text
@@ -32,20 +31,22 @@ class TextNode(Node):
     def text(self):
         return self._text
     
+    @property
+    def corpus(self):
+        return self._text
+    
     @text.setter
     def text(self, text:str):
         self._text = text
 
 
 class HeaderNode(Node):
-
     
-    def __init__(self, name:str, header:str, headerNumber:int, **kwargs):
+    def __init__(self, header:str, headerNumber:int, **kwargs):
         self.header = header
         self._header_level = headerNumber
-        self.name = header
-        self.corpus = []
-        super().__init__(name, **kwargs)
+        self._corpus = []
+        super().__init__(header, **kwargs)
         
     def __str__(self):
         return self.header
@@ -60,13 +61,15 @@ class HeaderNode(Node):
     @header_level.setter
     def header_level(self, headerNumber:int) -> None:
         self._header_level = headerNumber
+
+    def __pow__(self, other):
+        self._corpus.append(other)
         
-    def get_corpus(self) -> list:
-        return self.corpus
-    
-    def add_to_corpus(self, text:str) -> None:
-        self.corpus.append(text)
+    @property
+    def corpus(self) -> str:
+        final_text = self.header + "\n"
+        for child in self._corpus:
+            final_text += child.corpus + "\n"
+        return final_text    
 
-
-
-
+        
