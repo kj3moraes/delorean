@@ -32,7 +32,16 @@ class RestructuredParser(Parser):
         
         tree = build_tree(self.text, document_name=self.document_name, header_pattern=HEADER_PATTERN)
         return tree
+   
+
+class AsciiDocParser(Parser):
+    
+    def __init__(self, document_name:str, text:str):
+        super().__init__(document_name, text)
         
+    def parse(self) -> Node:
+        pass     
+
 
 class TextParser(Parser):
     
