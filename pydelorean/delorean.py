@@ -44,11 +44,11 @@ def rsttreeify(name:str, rst:str, *args, **kwargs) -> RestructuredForest:
     pass
 
 
-def asciidoc_treeify(name:str, asciidoc:str, *args, **kwargs) -> AsciidocForest:
+def asciidoc_treeify(name:str, adoc:str, *args, **kwargs) -> AsciiDocForest:
     pass
 
 
-def yaml_treeify(name:str, yaml:str, *args, **kwargs) -> YamlForest:
+def yaml_treeify(name:str, yaml:str, *args, **kwargs) -> YAMLForest:
     pass
 
 
@@ -116,11 +116,11 @@ def rsttextify(forest: RestructuredForest) -> str:
     pass
 
 
-def asciidoctextify(forest: AsciidocForest) -> str:
+def asciidoctextify(forest: AsciiDocForest) -> str:
     pass
 
 
-def yamltextify(forest: YamlForest) -> str:
+def yamltextify(forest: YAMLForest) -> str:
     pass
 
 
