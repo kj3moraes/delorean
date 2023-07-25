@@ -1,0 +1,2 @@
+include media/*
+include requirements.txt

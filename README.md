@@ -68,11 +68,11 @@ documentation page here - [nil](nil)
 ## Features
 
 Some of the features of this library are:
+
 - forest data structure for Markdown, reStructuredText, AsciiDoc, JSON, YAML and XML.
 - 'cleaning' of documents to remove unwanted elements.
-- document manipulation using the tree data structure. 
-
-Refer to the FEATURES.md file for more information or you can visit the documentation page here - [nil](nil)
+- document manipulation using the tree data structure.
+- document generation from tree data structure.
 
 ## License
 

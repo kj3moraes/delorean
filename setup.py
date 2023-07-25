@@ -5,7 +5,7 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 LONG_DESCRIPTION = (this_directory / "README.md").read_text()
 
-VERSION = '1.5.2'
+VERSION = '1.5.3'
 DESCRIPTION = 'A package to convert between markup documents and a forest data structure for efficient processing.'
 
 setup(
@@ -14,8 +14,8 @@ setup(
     author = "Keane Moraes",
     author_email = 'lordvader3002@gmail.com',
     description = DESCRIPTION,
+    long_description_content_type='text/markdown',
     long_description=LONG_DESCRIPTION,
-    long_descritpion_content_type='text/markdown',
     license = "Apache 2.0",
     url = "http://github.com/kj3moraes/delorean",
     packages = ['pydelorean', 'pydelorean.base', 'pydelorean.parser', 'pydelorean.tools'],
