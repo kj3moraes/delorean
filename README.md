@@ -1,4 +1,4 @@
-<img style="float: left; padding:20px" src="media/image.svg" alt="pydelorean" width="75"/>
+<img style="float: left; padding:20px" src="media/image.png" alt="pydelorean" width="75"/>
 
 # delorean
 
