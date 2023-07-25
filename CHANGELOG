@@ -5,7 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.3.4] - 2023-0
+
+## [v1.5.0] - 2023-07-24
+
+## Added
+
+- Splitting of paragraphs into their own nodes in the tree.
+
+## [v1.4.0] - 2023-07-07
+
+## Added
+
+- The AsciiDoc classes.
+
+## Fixed
+
+- Bug fixes with the tree building process.
+
+## [v1.3.4] - 2023-07-03
 
 ## Added
 
@@ -22,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed all uses cases of the treelib library
 
 
-## [v1.3.3] - 2023-07-05
+## [v1.3.3] - 2023-07-01
 
 ### Fixed 
 

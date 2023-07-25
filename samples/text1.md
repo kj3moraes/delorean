@@ -13,6 +13,8 @@ tags:
 
 The appendix begins with an epigraph by Pardot Kynes in which he considers the kind of existence available when humans increase in number in a finite environment.
 
+The appendix is divided into four sections, each of which is a document written by a character in the novel.
+
 ## Appendix I: The Ecology of Dune.
 This appendix details “the ecology of Dune.” It is heavily focused on the story of Pardot Kynes, Arrakis's first planetologist.
 
@@ -25,6 +27,8 @@ The narrator introduces it by noting that Lady Jessica commissioned the report d
 
 ### Narratives
 The document is noted as being extremely honest in tone.
+
+Woah there. another paragraph.
 
 ## Appendix IV: The Almanak eb-Ashraf (Selected Excerpts of the Noble Houses)
 This appendix details selected excerpts about the noble Houses of Dune. The first entry discusses the Padishah Emperor Shaddam IV of House Corrino. His rule is most significant for the “Arrakis Revolt,” which historians ascribe to his poor court politics. 

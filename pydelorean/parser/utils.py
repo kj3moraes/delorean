@@ -2,6 +2,20 @@ import re
 from pydelorean.base import TextNode, HeaderNode
 from bigtree import Node, print_tree
 
+
+def parse_text(input_text:str) -> list[TextNode]:
+    return_list = []
+    
+    # Split the text by newlines
+    input_text = input_text.strip()
+    paragraphs = input_text.split("\n\n")    
+    
+    for paragraph in paragraphs:
+        print(paragraph)
+        return_list.append(TextNode(name=paragraph, text=paragraph))
+        
+    return return_list
+
 def build_tree(inputText:str, *args, **kwargs) -> Node:
 
     assert isinstance(inputText, str), "inputText must be a string"
@@ -22,17 +36,19 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
     # BASE CASE
     # Check if it is only text (since there are no header indices)
     if len(indices) == 0:
-        text_node = TextNode(name=inputText, text=inputText)
-        root >> text_node
-        root ** text_node
+        list_of_text_nodes = parse_text(inputText)
+        for text_node in list_of_text_nodes:
+            root >> text_node
+            root ** text_node
         return root
     
     # Is there text before the first header?
     if indices[0][0] != 0:
         textBefore = inputText[0:indices[0][0]]
-        node = TextNode(name=textBefore, text=textBefore)
-        root >> node
-        root ** node
+        list_of_text_nodes = parse_text(textBefore)
+        for text_node in list_of_text_nodes:
+            root >> text_node
+            root ** text_node
 
     # Use a stack to keep track of the header levels.
     stack = []
@@ -63,9 +79,13 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
             # Extract the text between the current header and the previous header
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                node = TextNode(name=textBetween, text=textBetween)
-                lastHeader[-1] >> node
-                lastHeader[-1] ** node
+                list_of_text_nodes = parse_text(textBetween)
+                for text_node in list_of_text_nodes:
+                    lastHeader[-1] >> text_node
+                    lastHeader[-1] ** text_node
+                # node = TextNode(name=textBetween, text=textBetween)
+                # lastHeader[-1] >> node
+                # lastHeader[-1] ** node
                 
             # Create the header node and add it to the stack
             node = HeaderNode(header=currHeaderText, headerNumber=currHeaderLevel)
@@ -80,9 +100,10 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
             # Get the text between 
             textBetween = inputText[lastHeader[1][1]:currHeader[0]].strip()
             if textBetween != "":
-                node = TextNode(name=textBetween, text=textBetween)
-                lastHeader[-1] >> node
-                lastHeader[-1] ** node
+                list_of_text_nodes = parse_text(textBetween)
+                for text_node in list_of_text_nodes:
+                    lastHeader[-1] >> text_node
+                    lastHeader[-1] ** text_node
                                             
             # Pop off until you get to the node with a lower level than the current header level
             while len(stack) > 0:
@@ -107,9 +128,13 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
     # Check if there is any text after the last header
     if indices[-1][1] != len(inputText):
         textEnd = inputText[indices[-1][1]:].strip()
-        node = TextNode(name=textEnd, text=textEnd)
-        stack[-1][-1] >> node
-        stack[-1][-1] ** node
+        list_of_text_nodes = parse_text(textEnd)
+        for text_node in list_of_text_nodes:
+            stack[-1][-1] >> text_node
+            stack[-1][-1] ** text_node
+        # node = TextNode(name=textEnd, text=textEnd)
+        # stack[-1][-1] >> node
+        # stack[-1][-1] ** node
         
     return root
 
