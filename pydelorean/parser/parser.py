@@ -19,6 +19,7 @@ class MarkdownParser(Parser):
         HEADER_PATTERN = r"^(#+\s+)(.*)"
         
         tree = build_tree(self.text, document_name=self.document_name, header_pattern=HEADER_PATTERN)
+        build_corpus(tree)
         return tree
         
 
@@ -31,6 +32,7 @@ class RestructuredParser(Parser):
         HEADER_PATTERN = r"^(=+|-+|`+|'+|\^+|\*+|\.+|~+|\++)\s+(.+)\s+\1$"
         
         tree = build_tree(self.text, document_name=self.document_name, header_pattern=HEADER_PATTERN)
+        build_corpus(tree)
         return tree
    
 

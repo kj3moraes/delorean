@@ -16,7 +16,11 @@ def generate_forest(path_to_md_file:str):
     forest = treeify(name_of_file, markdown_text)
     
     root = forest.root
-    print_tree(root)
+    # print_tree(root)
+    
+    print(f"CORPUS = \n{root.corpus}")
+    
+    print(f"CORPUS FOR {root.children[0]} = \n{root.children[0].corpus}")
     
     expanse = get_progressive_expansion(root, append=True)
 

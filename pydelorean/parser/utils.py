@@ -16,6 +16,7 @@ def parse_text(input_text:str) -> list[TextNode]:
         
     return return_list
 
+
 def build_tree(inputText:str, *args, **kwargs) -> Node:
 
     assert isinstance(inputText, str), "inputText must be a string"
@@ -39,7 +40,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
         list_of_text_nodes = parse_text(inputText)
         for text_node in list_of_text_nodes:
             root >> text_node
-            root ** text_node
+            # root ** text_node
         return root
     
     # Is there text before the first header?
@@ -48,7 +49,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
         list_of_text_nodes = parse_text(textBefore)
         for text_node in list_of_text_nodes:
             root >> text_node
-            root ** text_node
+            # root ** text_node
 
     # Use a stack to keep track of the header levels.
     stack = []
@@ -65,7 +66,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
             # Create the header node with the current header.
             node = HeaderNode(header=currHeaderText, headerNumber=currHeaderLevel)
             root >> node
-            root ** node
+            # root ** node
                         
             # Add the node to the stack
             stack.append((currHeaderLevel, currHeader, node))
@@ -82,15 +83,12 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
                 list_of_text_nodes = parse_text(textBetween)
                 for text_node in list_of_text_nodes:
                     lastHeader[-1] >> text_node
-                    lastHeader[-1] ** text_node
-                # node = TextNode(name=textBetween, text=textBetween)
-                # lastHeader[-1] >> node
-                # lastHeader[-1] ** node
+                    # lastHeader[-1] ** text_node
                 
             # Create the header node and add it to the stack
             node = HeaderNode(header=currHeaderText, headerNumber=currHeaderLevel)
             lastHeader[-1] >> node
-            lastHeader[-1] ** node
+            # lastHeader[-1] ** node
             
             stack.append((currHeaderLevel, currHeader, node))
             
@@ -103,7 +101,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
                 list_of_text_nodes = parse_text(textBetween)
                 for text_node in list_of_text_nodes:
                     lastHeader[-1] >> text_node
-                    lastHeader[-1] ** text_node
+                    # lastHeader[-1] ** text_node
                                             
             # Pop off until you get to the node with a lower level than the current header level
             while len(stack) > 0:
@@ -116,11 +114,11 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
                 
                 node = HeaderNode(header=currHeaderText, headerNumber=currHeaderLevel)
                 root >> node
-                root ** node
+                # root ** node
             else:
                 node = HeaderNode(header=currHeaderText, headerNumber=currHeaderLevel)
                 stack[-1][-1] >> node
-                stack[-1][-1] ** node
+                # stack[-1][-1] ** node
                 
             stack.append((currHeaderLevel, currHeader, node))
 
@@ -131,10 +129,17 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
         list_of_text_nodes = parse_text(textEnd)
         for text_node in list_of_text_nodes:
             stack[-1][-1] >> text_node
-            stack[-1][-1] ** text_node
-        # node = TextNode(name=textEnd, text=textEnd)
-        # stack[-1][-1] >> node
-        # stack[-1][-1] ** node
-        
+            # stack[-1][-1] ** text_node
     return root
 
+
+
+def build_corpus(root:Node):
+    
+    if root.is_leaf:
+        return 
+    
+    for child in root.children:
+        build_corpus(child)
+        root & child
+    

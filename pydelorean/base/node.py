@@ -13,6 +13,7 @@ class TextNode(Node):
     
     def __init__(self, name:str, text:str, **kwargs):
         self.text = text
+        self.corpus = text
         super().__init__(name, **kwargs)
         
         
@@ -27,25 +28,13 @@ class TextNode(Node):
     def __repr__(self) -> str:
         return "(Text) " + self.text[0:min(10, int(self.FRACTION_PRINTABLE * len(self.text)))] + " ..."
     
-    @property
-    def text(self):
-        return self._text
-    
-    @property
-    def corpus(self):
-        return self._text
-    
-    @text.setter
-    def text(self, text:str):
-        self._text = text
-
 
 class HeaderNode(Node):
     
     def __init__(self, header:str, headerNumber:int, **kwargs):
         self.header = header
-        self._header_level = headerNumber
-        self._corpus = []
+        self.header_level = headerNumber
+        self.corpus = header + "\n"
         super().__init__(header, **kwargs)
         
     def __str__(self):
@@ -54,22 +43,8 @@ class HeaderNode(Node):
     def __repr__(self):
         return f"(h{self._header_level}) {self.header}"
     
-    @property
-    def header_level(self) -> int:
-        return self._header_level
-    
-    @header_level.setter
-    def header_level(self, headerNumber:int) -> None:
-        self._header_level = headerNumber
-
-    def __pow__(self, other):
-        self._corpus.append(other)
-        
-    @property
-    def corpus(self) -> str:
-        final_text = self.header + "\n"
-        for child in self._corpus:
-            final_text += child.corpus + "\n"
-        return final_text    
+    def __and__(self, other):
+        self.corpus += "\n" + other.corpus
+           
 
         
