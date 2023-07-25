@@ -1,3 +1,20 @@
+"""
+    Copyright 2023 Keane Moraes
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+"""
+
 from bs4 import BeautifulSoup
 from .delorean import *
 from .base import Forest
@@ -15,35 +32,3 @@ def textify(forest:Forest, *args, **kwargs) -> str:
     
     return mdtextify(forest)
 
-
-# TODO: I want to only expose treeify and textify to the user. Move this someplace else.
-def clean_markdown(md:str) -> str:
-        
-    # Remove the metadata
-    _, markdown_text = find_metadata(md)
-    
-     # Create a BeautifulSoup object with the input markdown text
-    soup = BeautifulSoup(markdown_text, 'html.parser')
-
-    # Remove HTML tags from the document
-    markdown_text = soup.get_text()
-    
-    # Remove links, images, and backlinks
-    markdown_text = re.sub(r'!\[(.*?)\]\((.*?)\)', '', markdown_text)
-    markdown_text = re.sub(r'\[(.*?)\]\((.*?)\)', r'\1', markdown_text)
-    markdown_text = re.sub(r'\[\[(.*?)\]\]', r'\1', markdown_text)
-    
-    # Remove quotation marks
-    markdown_text = markdown_text.replace('>', '')  
-    
-    # Remove bold and italics formatting
-    markdown_text = re.sub(r'\*\*(.*?)\*\*', r'\1', markdown_text)
-    markdown_text = re.sub(r'__(.*?)__', r'\1', markdown_text)
-    markdown_text = re.sub(r'\*(.*?)\*', r'\1', markdown_text)
-    markdown_text = re.sub(r'_(.*?)_', r'\1', markdown_text)
-    
-    # Remove empty lines
-    markdown_text = re.sub(r'^\s*$', '', markdown_text, flags=re.MULTILINE)
-    
-    return markdown_text
-    
