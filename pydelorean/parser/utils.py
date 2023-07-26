@@ -28,7 +28,6 @@ def parse_text(input_text:str) -> list[TextNode]:
     paragraphs = input_text.split("\n\n")    
     
     for paragraph in paragraphs:
-        print(paragraph)
         return_list.append(TextNode(name=paragraph, text=paragraph))
         
     return return_list

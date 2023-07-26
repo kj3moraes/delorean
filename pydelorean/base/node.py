@@ -27,7 +27,7 @@ class TextNode(Node):
     def __init__(self, name:str, text:str, **kwargs):
         self.text = text
         self.corpus = text
-        super().__init__(name, **kwargs)
+        super().__init__(name=name, **kwargs)
         
         
     def __getitem__(self, index:int):
@@ -48,7 +48,7 @@ class HeaderNode(Node):
         self.header = header
         self.header_level = headerNumber
         self.corpus = header + "\n"
-        super().__init__(header, **kwargs)
+        super().__init__(name=header, **kwargs)
         
     def __str__(self):
         return self.header

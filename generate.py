@@ -18,24 +18,15 @@ def generate_forest(path_to_md_file:str):
     for children in root.children:
         print(children.path_name)
     
-    shift_nodes(root, ["dune_appendices.md/# Terminology of the Imperium"], ["dune_appendices.md/# Appendices/# Terminology of the Imperium"],
-                skippable=True)
-    
-    print_tree(root)
-    
-    print(f"CORPUS = \n{root.corpus}")
-    
-    print(f"CORPUS FOR {root.children[0]} = \n{root.children[0].corpus}")
-    
-    # expanse = get_progressive_expansion(root, append=True)
+    expanse = get_progressive_expansion(root, append=True)
 
-    # for header, para in expanse:
-    #     print(header, "\n=====================")
-    #     print(clean_markdown(para, remove_header_tags=True))
-    #     print()
+    for header, para in expanse:
+        print(header, "\n=====================")
+        print(clean_markdown(para, remove_header_tags=True))
+        print()
     
     
 # Iterate over all markdown files in the current directory
-generate_forest("./samples/markdown/dune_appendices.md")
+generate_forest("./samples/markdown/progressive_summarization.md")
         
 
