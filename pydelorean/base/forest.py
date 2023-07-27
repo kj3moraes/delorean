@@ -25,7 +25,6 @@ class Forest:
         self.document_name = document_name
         self.root = root
         self.num_trees = len(root.children)
-        # TODO: Implement a method to count the number of nodes in the tree
     
     def __str__(self):
         return str(self.root)
@@ -43,14 +42,11 @@ class Forest:
     
     def set_root(self, root:HeaderNode):
         self.root = root
-    
-    # TODO: Implement __str__ and __len__ methods
-    # FIGUREOUT: What other methods should this base class have ?
+
 
 
 class MarkdownForest(Forest):
     
-    # TODO: Make this a subclass of Forest
     def __init__(self, root:HeaderNode, document_name:str="[document]", metadata:dict=None):
         super().__init__(root, document_name)
         self.metadata = metadata

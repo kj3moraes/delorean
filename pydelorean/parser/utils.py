@@ -40,6 +40,9 @@ def CLEAN_MARKDOWN_HEADER(inputText:str) -> str:
     return re.sub(pattern, "", inputText).strip()
 
 
+
+# TODO: We need to find a way to seperate texts and lists and make List its own Node.
+
 def build_tree(inputText:str, *args, **kwargs) -> Node:
 
     assert isinstance(inputText, str), "inputText must be a string"
