@@ -15,6 +15,7 @@
 
 """
 
+from bigtree import print_tree
 from .node import HeaderNode
 
 

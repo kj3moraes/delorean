@@ -25,6 +25,7 @@ class TextNode(Node):
     FRACTION_PRINTABLE = 0.25   
     
     def __init__(self, name:str, text:str, **kwargs):
+        # self.name = name
         self.text = text
         self.corpus = text
         super().__init__(name=name, **kwargs)

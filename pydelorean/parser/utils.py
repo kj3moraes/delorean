@@ -25,12 +25,19 @@ def parse_text(input_text:str) -> list[TextNode]:
     
     # Split the text by newlines
     input_text = input_text.strip()
-    paragraphs = input_text.split("\n\n")    
+    paragraphs = re.split(r"\n\s*\n", input_text)   
     
     for paragraph in paragraphs:
+        if paragraph == "":
+            continue
         return_list.append(TextNode(name=paragraph, text=paragraph))
         
     return return_list
+
+
+def CLEAN_MARKDOWN_HEADER(inputText:str) -> str:
+    pattern = r'^\s*#+\s+'    
+    return re.sub(pattern, "", inputText).strip()
 
 
 def build_tree(inputText:str, *args, **kwargs) -> Node:
@@ -75,6 +82,7 @@ def build_tree(inputText:str, *args, **kwargs) -> Node:
 
         currHeaderText = inputText[currHeader[0]:currHeader[1]]
         currHeaderLevel = len(currHeaderText) - len(currHeaderText.replace("#", ""))
+        currHeaderText = CLEAN_MARKDOWN_HEADER(currHeaderText)
         
         # If this is the first header then create the header node automatically.
         if len(stack) == 0:

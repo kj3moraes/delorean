@@ -5,7 +5,7 @@ from pathlib import Path
 this_directory = Path(__file__).parent
 LONG_DESCRIPTION = (this_directory / "README.md").read_text()
 
-VERSION = '1.5.4'
+VERSION = '1.5.5'
 DESCRIPTION = 'A package to convert between markup documents and a forest data structure for efficient processing.'
 
 setup(

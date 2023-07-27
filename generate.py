@@ -27,6 +27,6 @@ def generate_forest(path_to_md_file:str):
     
     
 # Iterate over all markdown files in the current directory
-generate_forest("./samples/markdown/progressive_summarization.md")
+generate_forest("./samples/markdown/dune_appendices.md")
         
 
