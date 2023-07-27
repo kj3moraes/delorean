@@ -10,6 +10,8 @@ def generate_forest(path_to_md_file:str):
 
     name_of_file = os.path.basename(path_to_md_file)
     # Create a forest from the Markdown text
+    
+    markdown_text = clean_markdown(markdown_text)
     forest = treeify(name_of_file, markdown_text)
     
     root = forest.root
@@ -27,6 +29,6 @@ def generate_forest(path_to_md_file:str):
     
     
 # Iterate over all markdown files in the current directory
-generate_forest("./samples/markdown/dune_appendices.md")
+generate_forest("./samples/markdown/the_quantum_well.md")
         
 
